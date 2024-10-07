@@ -1,63 +1,98 @@
-CREATE OR REPLACE PERSONNE (
+SET FOREIGN_KEY_CHECKS=0;
+
+CREATE OR REPLACE TABLE PERSONNE (
     idPers SERIAL PRIMARY KEY,
     nomPers VARCHAR(64),
     prenomPers VARCHAR(64),
     poids INT,
     taille INT,
     tel VARCHAR(16),
-    mail VARCHAR(128);
+    mail VARCHAR(128)
 );
 
-CREATE OR REPLACE ENCADRANT (
-    idPers INT PRIMARY KEY,
+CREATE OR REPLACE TABLE ENCADRANT (
+    idPers SERIAL PRIMARY KEY,
     nbHeuresMax INT,
-    FOREIGN KEY (idPers) REFERENCES personne(idPers);
+    FOREIGN KEY (idPers) REFERENCES personne(idPers) ON DELETE CASCADE
 );
 
-CREATE OR REPLACE CLIENT (
-    idPers INT PRIMARY KEY,
+CREATE OR REPLACE TABLE CLIENT (
+    idPers SERIAL PRIMARY KEY,
     dateInscription DATE,
-    FOREIGN KEY (idPers) REFERENCES personne(idPers);
+    FOREIGN KEY (idPers) REFERENCES personne(idPers) ON DELETE CASCADE
 );
 
-CREATE OR REPLACE COTISATION_CLIENT (
-    idPers INT,
-    anneecotisation DATE,
+CREATE OR REPLACE TABLE COTISATION_CLIENT (
+    idPers SERIAL,
+    anneecotisation YEAR,
     prix DECIMAL(6,2),
     PRIMARY KEY(idPers, anneecotisation),
-    FOREIGN KEY (idPers) REFERENCES personne(idPers);
+    FOREIGN KEY (idPers) REFERENCES personne(idPers) ON DELETE CASCADE
 );
 
-CREATE OR REPLACE PONEY (
+CREATE OR REPLACE TABLE RACE (
+    nomRace VARCHAR(32) PRIMARY KEY,
+    description VARCHAR(512)
+);
+
+CREATE OR REPLACE TABLE PONEY (
     idPoney SERIAL PRIMARY KEY,
     nomPoney VARCHAR(32),
     poidsMax INT,
-    tailleMax INT;
+    tailleMax INT,
+    nomRace VARCHAR(32),
+    FOREIGN KEY (nomRace) REFERENCES RACE(nomRace) ON DELETE CASCADE
 );
 
-CREATE OR REPLACE SEANCE (
+CREATE OR REPLACE TABLE SEANCE (
     idSeance SERIAL PRIMARY KEY,
+    encadrantSeance BIGINT UNSIGNED,
     intitule VARCHAR(64),
     duree INT,
     jma DATE,
-    hh INT;
+    heureDebut INT,
+    FOREIGN KEY (encadrantSeance) REFERENCES ENCADRANT(idPers) ON DELETE CASCADE
 );
 
-CREATE OR REPLACE COURS (
+CREATE OR REPLACE TABLE PONEY_RESERVE (
+    idSeance BIGINT UNSIGNED,
+    idPoney BIGINT UNSIGNED,
+    PRIMARY KEY (idSeance, idPoney),
+    FOREIGN KEY (idSeance) REFERENCES SEANCE(idSeance) ON DELETE CASCADE,
+    FOREIGN KEY (idPoney) REFERENCES PONEY(idPoney) ON DELETE CASCADE
+);
+
+CREATE OR REPLACE TABLE INSCRIPTION (
+    idSeance BIGINT UNSIGNED,
+    idPers BIGINT UNSIGNED,
+    PRIMARY KEY (idSeance, idPers),
+    FOREIGN KEY (idSeance) REFERENCES SEANCE(idSeance) ON DELETE CASCADE,
+    FOREIGN KEY (idPers) REFERENCES PERSONNE(idPers) ON DELETE CASCADE
+);
+
+CREATE OR REPLACE TABLE COURS (
     idCours SERIAL PRIMARY KEY,
     nbPersonneMax INT,
-    nomCours VARCHAR(64);
+    nomCours VARCHAR(64),
+    niveau INT,
+    FOREIGN KEY (niveau) REFERENCES NIVEAU(niveau) ON DELETE CASCADE
+
 );
 
-CREATE OR REPLACE NIVEAU (
-    niveau INT PRIMARY KEY,
+CREATE OR REPLACE TABLE NIVEAU (
+    niveau INT PRIMARY KEY
 );
 
-CREATE TABLE OBTENIR_LVL (
-    idPers INT,
+CREATE OR REPLACE TABLE OBTENIR_LVL (
+    idPers SERIAL,
     niveau INT,
     jma DATE, 
-    PRIMARY KEY (idPers, idNiveau, jma),
-    FOREIGN KEY (idPers) REFERENCES personne(idPers),
-    FOREIGN KEY (idNiveau) REFERENCES niveau(idNiveau);
+    PRIMARY KEY (idPers, niveau, jma),
+    FOREIGN KEY (idPers) REFERENCES personne(idPers) ON DELETE CASCADE,
+    FOREIGN KEY (niveau) REFERENCES niveau(niveau) ON DELETE CASCADE
 );
+
+CREATE OR REPLACE INDEX idx_nomPoney ON PONEY(nomPoney);
+CREATE OR REPLACE INDEX idx_nomPers ON PERSONNE(nomPers);
+
+SET FOREIGN_KEY_CHECKS=1;
