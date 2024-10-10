@@ -39,7 +39,7 @@ CREATE OR REPLACE TABLE PONEY (
     idPoney SERIAL PRIMARY KEY,
     nomPoney VARCHAR(32),
     poidsMax INT,
-    tailleMax INT,
+    tailleMin INT,
     nomRace VARCHAR(32),
     FOREIGN KEY (nomRace) REFERENCES RACE(nomRace) ON DELETE CASCADE
 );
@@ -52,6 +52,7 @@ CREATE OR REPLACE TABLE SEANCE (
     jma DATE,
     heureDebut INT,
     FOREIGN KEY (encadrantSeance) REFERENCES ENCADRANT(idPers) ON DELETE CASCADE
+    CONSTRAINT seanceTropLonque CHECK (duree <= 2)
 );
 
 CREATE OR REPLACE TABLE PONEY_RESERVE (
