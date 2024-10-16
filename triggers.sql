@@ -1,7 +1,7 @@
 DELIMITER mlp
 
 CREATE OR REPLACE TRIGGER limite_10_inscriptions
-BEFORE INSERT ON INSCRIPTION FOR EACH ROW
+BEFORE INSERT ON RESERVER FOR EACH ROW
 BEGIN
     DECLARE nbInscriptions INT;
     DECLARE mes VARCHAR(128);
@@ -52,31 +52,15 @@ BEGIN
     END IF;
 END mlp
 
-CREATE OR REPLACE TRIGGER limite_10_inscriptions
-BEFORE INSERT ON INSCRIPTION FOR EACH ROW
-BEGIN
-    DECLARE nbInscriptions INT;
-    DECLARE mes VARCHAR(128);
-
-    SELECT COUNT(*) INTO nbInscriptions
-        FROM INSCRIPTION
-        WHERE idSeance = NEW.idSeance;
-
-    IF nbInscriptions >= 10 THEN
-        SIGNAL SQLSTATE '45000'
-        SET mes = 'Le nombre maximum de 10 inscriptions est atteint pour cette seance';
-    END IF;
-END mlp
-
 CREATE OR REPLACE TRIGGER client_deja_inscrit 
-BEFORE INSERT ON INSCRIPTION FOR EACH ROW
+BEFORE INSERT ON RESERVER FOR EACH ROW
 BEGIN
     DECLARE nbInscriptions INT;
     DECLARE mes VARCHAR(128);
 
     SELECT COUNT(*) INTO nbInscriptions
         FROM INSCRIPTION
-        WHERE idSeance = NEW.idSeance AND idPers = NEW.idPers;
+        WHERE idSeance = NEW.idSeance AND idCli = NEW.idCli;
 
     IF nbInscriptions > 0 THEN
         SIGNAL SQLSTATE '45000'
@@ -138,7 +122,7 @@ BEGIN
 END mlp
 
 CREATE OR REPLACE TRIGGER client_trop_gros 
-BEFORE INSERT ON INSCRIPTION FOR EACH ROW
+BEFORE INSERT ON RESERVER FOR EACH ROW
 BEGIN
     DECLARE poidsMaxPoney INT;
     DECLARE poidsPers INT;
@@ -150,7 +134,7 @@ BEGIN
 
     SELECT poids INTO poidsPers
     FROM PERSONNE
-    WHERE idPers=new.idPers;
+    WHERE idCli=new.idCli;
 
     IF poidsPers>poidsMax THEN
         SIGNAL SQLSTATE '45000'
@@ -158,7 +142,7 @@ BEGIN
 END mlp
 
 CREATE OR REPLACE TRIGGER client_pas_assez_grand 
-BEFORE INSERT ON INSCRIPTION FOR EACH ROW
+BEFORE INSERT ON RESERVER FOR EACH ROW
 BEGIN
     DECLARE tailleMinPoney INT;
     DECLARE taillePers INT;
@@ -170,7 +154,7 @@ BEGIN
 
     SELECT taille INTO taillePers
     FROM PERSONNE
-    WHERE idPers=new.idPers;
+    WHERE idCli=new.idCli;
 
     IF tailleMinPoney>taillePers THEN
         SIGNAL SQLSTATE '45000'
