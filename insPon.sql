@@ -79,3 +79,64 @@ INSERT in TABLE PONEY(idPoney,nomPoney,poidsMax,tailleMin,nomRace) VALUES
 (31,'Big Mac', 400, 145, 'poney'),
 (32,'Applejack', 330, 125, 'poney'),
 (33,'Zecora', 330, 125, 'poney');
+
+INSERT INTO COURS(idCours, nbPersonneMax, nomCours, niveau) VALUES
+(1, 10, 'Cours débutants', 1),
+(2, 12, 'Cours avancés', 2),
+(3, 8, 'Cours intermédiaires', 3),
+(4, 15, 'Cours enfants', 1),
+(5, 20, 'Cours adultes', 2),
+(6, 25, 'Cours seniors', 3);
+
+INSERT INTO OBTENIR_LVL(idPers, niveau, jma) VALUES
+(1, 1, '2023-01-01'),
+(2, 2, '2023-01-02'),
+(3, 1, '2023-01-01'),
+(4, 2, '2023-01-03'),
+(5, 3, '2023-01-01'),
+(6, 4, '2023-01-04'),
+(7, 2, '2023-02-01'),
+(8, 1, '2023-01-02'),
+(9, 2, '2023-02-01'),
+(10, 3, '2023-01-02'),
+(11, 4, '2023-01-05'),
+(12, 1, '2023-01-01');
+
+INSERT INTO SEANCE(idSeance, encadrantSeance, intitule, duree, jma, heureDebut) VALUES
+(1, 1, 'Séance débutants', 1, '2024-11-20', 9,1),
+(2, 2, 'Séance avancés', 1, '2024-11-20', 10,1),
+(3, 3, 'Séance intermédiaires', 2, '2024-11-20', 12,2),
+(4, 4, 'Séance enfants', 1, '2024-11-21', 9,3),
+(5, 5, 'Séance adultes', 2, '2024-11-21', 14,4),
+(6, 6, 'Séance seniors', 1, '2024-11-22', 15,5),
+(7, 7, 'Séance compétitions', 2, '2024-11-23', 11,6);
+
+INSERT INTO PONEY_RESERVE(idSeance, idPoney) VALUES
+(1, 1),
+(2, 3),
+(3, 4),
+(4, 5),
+(5, 6),
+(6, 7),
+(7, 8);
+(26, 3),
+(13, 4),
+(4, 5),
+(17, 6),
+(19, 7),
+(7, 8);
+
+INSERT INTO RESERVER(idSeance, idCli) VALUES
+(1, 8), 
+(2, 9), 
+(3, 10),
+(4, 11),
+(5, 12),
+(6, 8), 
+(7, 10); 
+
+INSERT INTO NIVEAU(niveau) VALUES
+(1),
+(2),
+(3),
+(4);
