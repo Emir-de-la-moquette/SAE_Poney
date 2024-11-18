@@ -1,4 +1,4 @@
-INSERT in TABLE PERSONNE(idPers,nomPers,prenomPers,poids,taille,tel,mail) VALUES 
+INSERT INTO PERSONNE(idPers,nomPers,prenomPers,poids,taille,tel,mail) VALUES 
 (1,'ULAIT','Jacques',80,180,'06 12 34 56 78','ulait.jacques@mail.com'),
 (2,'ULAIT','Yvonne',60,160,'06 12 34 56 79','ulait.yvonne@mail.com'),
 (3,'MENVUSAT','Gérard',70,170,'06 12 34 56 80','gérard.menvusat@mail.com'),
@@ -10,25 +10,25 @@ INSERT in TABLE PERSONNE(idPers,nomPers,prenomPers,poids,taille,tel,mail) VALUES
 (9,'BOULA','Alban',85,195,'06 12 34 56 86','alban1.boula@mail.com'),
 (10,'PHEURE','Kwoï',55,145,'06 12 34 56 87','kwoi.pheure@mailcom'),
 (11,'WHITE','Walter',98,180,'06 12 34 56 88','ww.ww@mail.com'),
-(12,'PLUDEINSPI','Jay',69,142,'06 12 34 56 89','jay.pludeinspi@mail.com');
+(12,'PLUDAINSPI','Jay',69,142,'06 12 34 56 89','jay.pludeinspi@mail.com');
 
-INSERT in TABLE ENCADRANT(idEnc,nbHeuresMax) VALUES 
+INSERT INTO ENCADRANT(idEnc,nbHeuresMax) VALUES 
 (1,20),
 (2,15),
 (3,25),
 (4,30),
 (5,10),
-(6,20)
+(6,20),
 (7,15);
 
-INSERT in TABLE CLIENT(idCli,dateInscription) VALUES
+INSERT INTO CLIENT(idCli,dateInscription) VALUES
 (8,'2020-07-19'),
 (9,'2020-07-19'),
 (10,'2021-08-19'),
 (11,'2023-11-02'),
 (12,'2024-02-29');
 
-INSERT in TABLE COTISATION_CLIENT(idCli,anneeCotisation,prix) VALUES
+INSERT INTO COTISATION_CLIENT(idCli,anneeCotisation,prix) VALUES
 (8,2020,100),
 (8,2021,100),
 (8,2022,200),
@@ -37,7 +37,7 @@ INSERT in TABLE COTISATION_CLIENT(idCli,anneeCotisation,prix) VALUES
 (11,2023,200),
 (12,2024,100);
 
-INSERT in TABLE RACE(nomRace,description) VALUES
+INSERT INTO RACE(nomRace,description) VALUES
 ('poney','poney'),
 ('pegase','cheval ailé'),
 ('licorne','cheval magique'),
@@ -45,7 +45,7 @@ INSERT in TABLE RACE(nomRace,description) VALUES
 ('girafe','cheval à long cou'),
 ('hippotame','cheval amphibie');
 
-INSERT in TABLE PONEY(idPoney,nomPoney,poidsMax,tailleMin,nomRace) VALUES
+INSERT INTO PONEY(idPoney,nomPoney,poidsMax,tailleMin,nomRace) VALUES
 (1,'Sophie',170,190,'girafe'),
 (2,'Hyppoglouton',250,150,'hippotame'),
 (3,'Bramble', 90, 110, 'poney'),
@@ -77,8 +77,14 @@ INSERT in TABLE PONEY(idPoney,nomPoney,poidsMax,tailleMin,nomRace) VALUES
 (29,'Lily Blossom', 290, 110, 'poney'),
 (30,'Cheerilee', 80, 125, 'poney'),
 (31,'Big Mac', 400, 145, 'poney'),
-(32,'Applejack', 330, 125, 'poney'),
+(32,'Applejack', 330, 10, 'poney'),
 (33,'Zecora', 330, 125, 'poney');
+
+INSERT INTO NIVEAU(niveau) VALUES
+(1),
+(2),
+(3),
+(4);
 
 INSERT INTO COURS(idCours, nbPersonneMax, nomCours, niveau) VALUES
 (1, 10, 'Cours débutants', 1),
@@ -86,7 +92,8 @@ INSERT INTO COURS(idCours, nbPersonneMax, nomCours, niveau) VALUES
 (3, 8, 'Cours intermédiaires', 3),
 (4, 15, 'Cours enfants', 1),
 (5, 20, 'Cours adultes', 2),
-(6, 25, 'Cours seniors', 3);
+(6, 25, 'Cours seniors', 3),
+(7, 30, 'Cours compétitions', 4);
 
 INSERT INTO OBTENIR_LVL(idPers, niveau, jma) VALUES
 (1, 1, '2023-01-01'),
@@ -102,14 +109,14 @@ INSERT INTO OBTENIR_LVL(idPers, niveau, jma) VALUES
 (11, 4, '2023-01-05'),
 (12, 1, '2023-01-01');
 
-INSERT INTO SEANCE(idSeance, encadrantSeance, intitule, duree, jma, heureDebut) VALUES
+INSERT INTO SEANCE(idSeance, encadrantSeance, intitule, duree, jma, heureDebut,idCours) VALUES
 (1, 1, 'Séance débutants', 1, '2024-11-20', 9,1),
-(2, 2, 'Séance avancés', 1, '2024-11-20', 10,1),
-(3, 3, 'Séance intermédiaires', 2, '2024-11-20', 12,2),
-(4, 4, 'Séance enfants', 1, '2024-11-21', 9,3),
-(5, 5, 'Séance adultes', 2, '2024-11-21', 14,4),
-(6, 6, 'Séance seniors', 1, '2024-11-22', 15,5),
-(7, 7, 'Séance compétitions', 2, '2024-11-23', 11,6);
+(2, 2, 'Séance avancés', 1, '2024-11-20', 10,2),
+(3, 3, 'Séance intermédiaires', 2, '2024-11-20', 12,3),
+(4, 4, 'Séance enfants', 1, '2024-11-21', 9,4),
+(5, 5, 'Séance adultes', 2, '2024-11-21', 14,5),
+(6, 6, 'Séance seniors', 1, '2024-11-22', 15,6),
+(7, 7, 'Séance compétitions', 2, '2024-11-23', 11,7);
 
 INSERT INTO PONEY_RESERVE(idSeance, idPoney) VALUES
 (1, 1),
@@ -118,13 +125,11 @@ INSERT INTO PONEY_RESERVE(idSeance, idPoney) VALUES
 (4, 5),
 (5, 6),
 (6, 7),
-(7, 8);
-(26, 3),
-(13, 4),
-(4, 5),
-(17, 6),
-(19, 7),
-(7, 8);
+(7, 8),
+(2, 26),
+(3, 13),
+(7, 17),
+(1, 19);
 
 INSERT INTO RESERVER(idSeance, idCli) VALUES
 (1, 8), 
@@ -133,10 +138,67 @@ INSERT INTO RESERVER(idSeance, idCli) VALUES
 (4, 11),
 (5, 12),
 (6, 8), 
-(7, 10); 
+(7, 10);
 
-INSERT INTO NIVEAU(niveau) VALUES
-(1),
-(2),
-(3),
-(4);
+
+INSERT INTO PERSONNE(idPers,nomPers,prenomPers,poids,taille,tel,mail) VALUES 
+(13,'test','test',250,150,'06 12 34 44 44','test.test@test.txt'),
+(14,'test','test2',60,30,'06 12 34 45 99','t.t'),
+(15, 'Dupont', 'Pierre', 70, 175, '06 23 45 67 89', 'p.dupont@mail.com'),
+(16, 'Martin', 'Sophie', 60, 165, '06 34 56 78 90', 's.martin@mail.com'),
+(17, 'Durand', 'Julien', 80, 180, '06 45 67 89 01', 'j.durand@mail.com'),
+(18, 'Lemoine', 'Claire', 65, 170, '06 56 78 90 12', 'c.lemoine@mail.com'),
+(19, 'Leclerc', 'Marc', 85, 185, '06 67 89 01 23', 'm.leclerc@mail.com');
+
+INSERT INTO CLIENT(idCli,dateInscription) VALUES
+(13,'2020-07-19'),
+(14,'2020-07-19'),
+(15,'2021-08-19'),
+(16,'2023-11-02'),
+(17,'2024-02-29'),
+(18,'2024-02-29'),
+(19,'2024-02-29');
+
+INSERT INTO COTISATION_CLIENT(idCli,anneeCotisation,prix) VALUES
+(13,2020,100),
+(13,2021,100),
+(13,2022,200),
+(14,2020,400),
+(15,2021,300),
+(16,2023,200),
+(17,2024,100),
+(18,2024,100),
+(19,2024,100);
+
+
+INSERT INTO PONEY(idPoney,nomPoney,poidsMax,tailleMin,nomRace) VALUES
+(34,'test', 90, 110, 'poney');
+
+INSERT INTO OBTENIR_LVL(idPers, niveau, jma) VALUES
+(13, 4, '2023-01-01');
+
+INSERT INTO SEANCE(idSeance, encadrantSeance, intitule, duree, jma, heureDebut,idCours) VALUES
+(8, 1, 'Séance test', 1, '2024-11-20', 10,1),
+(9, 2, 'Séance test1', 1, '2024-11-20', 12,2),
+(11,3,'Séance test3',1,'2024-11-20',13,4);
+--(10, 3, 'Séance test2', 2, '2024-11-20', 11,3);
+
+INSERT INTO PONEY_RESERVE(idSeance, idPoney) VALUES
+(8,32),
+(8, 34),
+(9, 34),
+(10, 34);
+
+INSERT INTO RESERVER(idSeance, idCli) VALUES
+(8, 13), 
+(8, 12), 
+(8, 11),
+(8, 10), 
+(8, 9), 
+(8, 8),
+(8,14),
+(8,15),
+(8,16),
+(8,17),
+(8,18),
+(8,19);

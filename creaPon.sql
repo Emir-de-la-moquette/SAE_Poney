@@ -13,17 +13,17 @@ CREATE OR REPLACE TABLE PERSONNE (
 CREATE OR REPLACE TABLE ENCADRANT (
     idEnc SERIAL PRIMARY KEY,
     nbHeuresMax INT,
-    FOREIGN KEY (idEnc) REFERENCES personne(idPers) ON DELETE CASCADE
+    FOREIGN KEY (idEnc) REFERENCES PERSONNE(idPers) ON DELETE CASCADE
 );
 
 CREATE OR REPLACE TABLE CLIENT (
     idCli SERIAL PRIMARY KEY,
     dateInscription DATE,
-    FOREIGN KEY (idCli) REFERENCES personne(idPers) ON DELETE CASCADE
+    FOREIGN KEY (idCli) REFERENCES PERSONNE(idPers) ON DELETE CASCADE
 );
 
 CREATE OR REPLACE TABLE COTISATION_CLIENT (
-    idCli SERIAL,
+    idCli BIGINT UNSIGNED,
     anneeCotisation YEAR,
     prix DECIMAL(6,2),
     PRIMARY KEY(idCli, anneeCotisation),
@@ -44,7 +44,18 @@ CREATE OR REPLACE TABLE PONEY (
     FOREIGN KEY (nomRace) REFERENCES RACE(nomRace) ON DELETE CASCADE
 );
 
+CREATE OR REPLACE TABLE NIVEAU (
+    niveau INT PRIMARY KEY
+);
 
+CREATE OR REPLACE TABLE OBTENIR_LVL (
+    idPers BIGINT UNSIGNED,
+    niveau INT,
+    jma DATE, 
+    PRIMARY KEY (idPers, niveau, jma),
+    FOREIGN KEY (idPers) REFERENCES PERSONNE(idPers) ON DELETE CASCADE,
+    FOREIGN KEY (niveau) REFERENCES NIVEAU(niveau) ON DELETE CASCADE
+);
 CREATE OR REPLACE TABLE COURS (
     idCours SERIAL PRIMARY KEY,
     nbPersonneMax INT,
@@ -52,19 +63,6 @@ CREATE OR REPLACE TABLE COURS (
     niveau INT,
     FOREIGN KEY (niveau) REFERENCES NIVEAU(niveau) ON DELETE CASCADE
 
-);
-
-CREATE OR REPLACE TABLE NIVEAU (
-    niveau INT PRIMARY KEY
-);
-
-CREATE OR REPLACE TABLE OBTENIR_LVL (
-    idPers SERIAL,
-    niveau INT,
-    jma DATE, 
-    PRIMARY KEY (idPers, niveau, jma),
-    FOREIGN KEY (idPers) REFERENCES personne(idPers) ON DELETE CASCADE,
-    FOREIGN KEY (niveau) REFERENCES niveau(niveau) ON DELETE CASCADE
 );
 
 CREATE OR REPLACE TABLE SEANCE (
@@ -119,7 +117,7 @@ BEGIN
     DECLARE nbInscriptions INT;
 
     SELECT COUNT(*) INTO nbInscriptions
-        FROM INSCRIPTION
+        FROM RESERVER
         WHERE idSeance = NEW.idSeance;
 
     IF nbInscriptions >= 10 THEN
@@ -163,35 +161,35 @@ BEGIN
     END IF;
 END mlp
 
-CREATE OR REPLACE TRIGGER client_deja_inscrit 
-BEFORE INSERT ON RESERVER FOR EACH ROW
-BEGIN
-    DECLARE nbInscriptions INT;
+-- CREATE OR REPLACE TRIGGER client_deja_inscrit 
+-- BEFORE INSERT ON RESERVER FOR EACH ROW
+-- BEGIN
+--     DECLARE nbInscriptions INT;
 
-    SELECT COUNT(*) INTO nbInscriptions
-        FROM INSCRIPTION
-        WHERE idSeance = NEW.idSeance AND idCli = NEW.idCli;
+--     SELECT COUNT(*) INTO nbInscriptions
+--         FROM RESERVER
+--         WHERE idSeance = NEW.idSeance AND idCli = NEW.idCli;
 
-    IF nbInscriptions > 0 THEN
-        SIGNAL SQLSTATE '45000'
-        SET message_text = 'Ce client est déjà inscrit à cette séance';
-    END IF;
-END mlp
+--     IF nbInscriptions > 0 THEN
+--         SIGNAL SQLSTATE '45000'
+--         SET message_text = 'Ce client est déjà inscrit à cette séance';
+--     END IF;
+-- END mlp
 
-CREATE OR REPLACE TRIGGER poney_deja_inscrit 
-BEFORE INSERT ON PONEY_RESERVE FOR EACH ROW
-BEGIN
-    DECLARE nbInscriptions INT;
+-- CREATE OR REPLACE TRIGGER poney_deja_inscrit 
+-- BEFORE INSERT ON PONEY_RESERVE FOR EACH ROW
+-- BEGIN
+--     DECLARE nbInscriptions INT;
 
-    SELECT COUNT(*) INTO nbInscriptions
-        FROM PONEY_RESERVE
-        WHERE idSeance = NEW.idSeance AND idPoney = NEW.idPoney;
+--     SELECT COUNT(*) INTO nbInscriptions
+--         FROM PONEY_RESERVE
+--         WHERE idSeance = NEW.idSeance AND idPoney = NEW.idPoney;
 
-    IF nbInscriptions > 0 THEN
-        SIGNAL SQLSTATE '45000'
-        SET message_text = 'Ce poney est déjà inscrit à cette séance';
-    END IF;
-END mlp
+--     IF nbInscriptions > 0 THEN
+--         SIGNAL SQLSTATE '45000'
+--         SET message_text = 'Ce poney est déjà inscrit à cette séance';
+--     END IF;
+-- END mlp
 
 CREATE OR REPLACE TRIGGER repos_poney 
 BEFORE INSERT ON PONEY_RESERVE 
@@ -203,19 +201,19 @@ BEGIN
     DECLARE jmaSeance DATE; 
     DECLARE heureDebutActuel INT;
 
-    SELECT jma, dureeSeance, heureDebut 
+    SELECT jma, duree, heureDebut 
     INTO jmaSeance, dureeCoursActuel, heureDebutActuel
     FROM SEANCE
     WHERE idSeance = NEW.idSeance;
 
-    SELECT IFNULL(dureeSeance, 0) INTO dureeCoursPrec1
+    SELECT IFNULL(duree, 0) INTO dureeCoursPrec1
     FROM SEANCE s
     JOIN PONEY_RESERVE pr ON pr.idSeance = s.idSeance
     WHERE s.jma = jmaSeance
       AND pr.idPoney = NEW.idPoney
       AND s.heureDebut = heureDebutActuel - 1;
 
-    SELECT IFNULL(dureeSeance, 0) INTO dureeCoursPrec2
+    SELECT IFNULL(duree, 0) INTO dureeCoursPrec2
     FROM SEANCE s
     JOIN PONEY_RESERVE pr ON pr.idSeance = s.idSeance
     WHERE s.jma = jmaSeance
@@ -249,8 +247,8 @@ BEGIN
     WHERE idSeance=NEW.idSeance;
 
     SELECT poids INTO poidsPers
-    FROM PERSONNE
-    WHERE idCli=new.idCli;
+    FROM PERSONNE JOIN CLIENT c ON c.idCli = PERSONNE.idPers
+    WHERE idCli=NEW.idCli;
 
     IF poidsPers>poidsMaxPoney THEN
         SIGNAL SQLSTATE '45000'
@@ -269,8 +267,8 @@ BEGIN
     WHERE idSeance=NEW.idSeance;
 
     SELECT taille INTO taillePers
-    FROM PERSONNE
-    WHERE idCli=new.idCli;
+    FROM PERSONNE JOIN CLIENT c ON c.idCli = PERSONNE.idPers
+    WHERE idCli=NEW.idCli;
 
     IF tailleMinPoney>taillePers THEN
         SIGNAL SQLSTATE '45000'
