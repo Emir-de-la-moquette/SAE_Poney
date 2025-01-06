@@ -42,7 +42,7 @@
                 <div class="table-container">
                     <h2>Gestion moniteurs</h2>
                         <?php
-                        $sql = "SELECT * FROM PERSONNE NATURAL JOIN ENCADRANT where idPers = idEnc";
+                        $sql = "SELECT * FROM PERSONNE NATURAL JOIN ENCADRANT where idPers = idEnc order by nomPers";
                         if (!$connexion->query($sql)){
                             echo "Error: %s\n";
                         }
@@ -67,7 +67,7 @@
                 <div class="table-container">
                     <h2>Gestion adhérents</h2>
                     <?php
-                    $sql = "SELECT * FROM PERSONNE NATURAL JOIN CLIENT where idPers = idCli";
+                    $sql = "SELECT * FROM PERSONNE NATURAL JOIN CLIENT where idPers = idCli order by nomPers";
                     if (!$connexion->query($sql)){
                         echo "Error: %s\n";
                     }
@@ -96,20 +96,20 @@
                 <div class="table-container">
                     <h2>Gestion poneys</h2>
                     <?php
-                    $sql = "SELECT * FROM PONEY";
+                    $sql = "SELECT * FROM PONEY order by nomRace";
                     if (!$connexion->query($sql)){
                         echo "Error: %s\n";
                     }
                     else{
                         $result = $connexion->query($sql);
                         echo "<table border='1'>";
-                        echo "<tr><th>Nom</th><th>Poids maximal</th><th>Taille Mininimale</th><th>Race</th></tr>";
+                        echo "<tr><th>Race</th><th>Nom</th><th>Poids maximal</th><th>Taille Mininimale</th></tr>";
                         foreach($result as $row){
                             echo "<tr>";
+                            echo "<td>".$row['nomRace']."</td>";
                             echo "<td>".$row['nomPoney']."</td>";
                             echo "<td>".$row['poidsMax']."</td>";
                             echo "<td>".$row['tailleMin']."</td>";
-                            echo "<td>".$row['nomRace']."</td>";
                             echo "</tr>";
                         }
                         echo "</table>";

@@ -78,7 +78,8 @@ INSERT INTO PONEY(idPoney,nomPoney,poidsMax,tailleMin,nomRace) VALUES
 (30,'Cheerilee', 80, 125, 'Poney'),
 (31,'Big Mac', 400, 145, 'Poney'),
 (32,'Applejack', 330, 10, 'Poney'),
-(33,'Zecora', 330, 125, 'Poney');
+(33,'Zecora', 330, 125, 'Poney'),
+(34,'Gros', 69, 42, 'Poney');
 
 INSERT INTO NIVEAU(niveau) VALUES
 (1),
