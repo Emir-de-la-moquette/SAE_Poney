@@ -1,10 +1,11 @@
 <?php
+
 // Start session
 session_start();
 
 // Check if user is already logged in
 if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
-    header("Location: welcome.php");
+    header("Location: admin.php");
     exit();
 }
 
@@ -22,6 +23,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($username === $validUsername && $password === $validPassword) {
         // Set session and redirect
         $_SESSION['loggedin'] = true;
+        $_SESSION['user'] = $username;
+        $_SESSION['pswrd'] = $password;
         header("Location: admin.php");
         exit();
     } else {

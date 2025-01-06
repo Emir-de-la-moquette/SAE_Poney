@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -9,21 +11,7 @@
 <body>
     <div class="container">
         <aside class="sidebar">
-            <div class="logo">
-                <img src="../static/images/logo-pony.png" alt="Logo">
-            </div>
-            <div class="admin-info">
-                <h2>ADMIN</h2>
-                <p>Jeanne Huller</p>
-            </div>
-            <nav>
-                <ul>
-                    <a href=''><li>Gestionnaire</li></a>
-                    <a href='../static/script/logout.php'><li>Plannings</li></a>
-                    <a href='../static/script/logout.php'><li>Paramètres</li></a>
-                    <a href='../static/script/logout.php'><li class="logout">Déconnexion</li></a>
-                </ul>
-            </nav>
+            <?php include "./navbar_admin.php" ?>
         </aside>
         <main>
             <div class="titreAdmin"><h1>Gestion des ressources internes</h1></div>
