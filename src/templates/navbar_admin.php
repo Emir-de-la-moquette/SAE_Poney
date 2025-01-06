@@ -14,10 +14,10 @@ try {
     // Récupérer un utilisateur (par exemple, le premier utilisateur)
     $query = "SELECT name, prenom FROM users WHERE email=\"".$_SESSION["user"]."\" and mdp=\"".$_SESSION["pswrd"]."\"";
     $stmt = $pdo->query($query);
-    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+    $userNAV = $stmt->fetch(PDO::FETCH_ASSOC);
 
     // Vérification de l'utilisateur
-    if (!$user) {
+    if (!$userNAV) {
         throw new Exception("Aucun utilisateur trouvé.");
     }
 } catch (Exception $e) {
@@ -35,7 +35,7 @@ try {
 </div>
 <div class="admin-info">
     <h2>ADMIN</h2>
-    <p><?php echo htmlspecialchars($user['name']); echo(" "); echo htmlspecialchars($user['prenom']);?></p>
+    <p><?php echo htmlspecialchars($userNAV['name']); echo(" "); echo htmlspecialchars($userNAV['prenom']);?></p>
 </div>
 <nav>
     <ul>

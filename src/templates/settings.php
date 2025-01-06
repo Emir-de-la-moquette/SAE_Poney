@@ -20,7 +20,6 @@ try {
     $query = "SELECT * FROM users WHERE email=\"".$_SESSION["user"]."\" and mdp=\"".$_SESSION["pswrd"]."\"";
     $stmt = $pdo->query($query);
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
-    print_r($user);
 
     // Vérification de l'utilisateur
     if (!$user) {
@@ -50,42 +49,41 @@ try {
 
             <div class="form-group">
                 <label for="username">Mail</label>
-                <input type="text" id="username" name="username" value="<?php echo htmlspecialchars($user['email']); ?>" required>
+                <input type="text" id="username" name="username" value="<?php echo htmlspecialchars($user['email']) ?? 'nullvalue'; ?>" required>
             </div>
 
             <div class="form-group">
                 <label for="name">Nom</label>
-                <input type="text" id="name" name="name" value="<?php echo htmlspecialchars($user['name']); ?>" required>
+                <input type="text" id="name" name="name" value="<?php echo htmlspecialchars($user['name']) ?? 'nullvalue'; ?>" required>
             </div>
 
             <div class="form-group">
                 <label for="prenom">Prenom</label>
-                <input type="text" id="prenom" name="prenom" value="<?php echo htmlspecialchars($user['prenom']); ?>" required>
+                <input type="text" id="prenom" name="prenom" value="<?php echo htmlspecialchars($user['prenom']) ?? 'nullvalue'; ?>" required>
             </div>
 
             <div class="form-group">
                 <label for="password">Mot de passe Actuel</label>
-                <input type="password" id="password" name="password" value="<?php echo htmlspecialchars($user['mdp']); ?>" required>
+                <input type="password" id="password" name="password" value="<?php echo htmlspecialchars($user['mdp']) ?? 'nullvalue'; ?>" required>
             </div>
             
             <div class="form-group">
                 <label for="NewPassword">Nouveau mot de passe</label>
                 <input type="password" id="NewPassword" name="NewPassword">
             </div>
-
             <div class="form-group">
                 <label for="telephone">Téléphone</label>
-                <input type="text" id="telephone" name="telephone" value="<?php echo htmlspecialchars($user['telephone']); ?>" required>
+                <input type="text" id="telephone" name="telephone" value="<?php echo htmlspecialchars($user['telephone']) ?? 'nullvalue'; ?>" required>
             </div>
 
             <div class="form-group">
                 <label for="taille">Taille</label>
-                <input type="text" id="taille" name="taille" value="<?php echo htmlspecialchars($user['taille']); ?>" required>
+                <input type="text" id="taille" name="taille" value="<?php echo htmlspecialchars($user['taille']) ?? 'nullvalue'; ?>" required>
             </div>
 
             <div class="form-group">
                 <label for="poids">Poids</label>
-                <input type="text" id="poids" name="poids" value="<?php echo htmlspecialchars($user['poids']); ?>" required>
+                <input type="text" id="poids" name="poids" value="<?php echo htmlspecialchars($user['poids']) ?? 'nullvalue'; ?>" required>
             </div>
 
             <div class="form-group" id="btnform">
