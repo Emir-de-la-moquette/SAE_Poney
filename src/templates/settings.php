@@ -28,6 +28,40 @@ try {
 } catch (Exception $e) {
     die("Erreur : " . $e->getMessage());
 }
+
+
+// Vérifier si le formulaire a été soumis
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Récupérer les données du formulaire
+    $nom = $_POST['name'] ?? null;
+    $prenom = $_POST['prenom'] ?? null;
+    $email = $_POST['email'] ?? null;
+    $mdp = $_POST['mdp'] ?? null;
+
+    // Validation de base
+    if ($nom && $email) {
+        try {
+            // Insérer les données dans la table "users"
+            $stmt = $pdo->prepare('UPDATE users SET name=:name, prenom=:prenom WHERE email=:email AND mdp=:mdp');
+            $stmt->bindParam(':name', $nom);
+            $stmt->bindParam(':prenom', $prenom);
+            $stmt->bindParam(':mdp', $mdp);
+            $stmt->bindParam(':email', $email);
+            $stmt->execute();
+
+            
+            echo "Informations enregistrées avec succès !";
+            header("./setting.php");
+
+        } catch (Exception $e) {
+            echo 'Erreur : ' . $e->getMessage();
+        }
+    } else {
+        echo "Veuillez remplir tous les champs.";
+    }
+}
+
+
 ?>
 
 <!DOCTYPE html>
@@ -48,8 +82,8 @@ try {
             <h1>Modifier vos informations</h1>
 
             <div class="form-group">
-                <label for="username">Mail</label>
-                <input type="text" id="username" name="username" value="<?php echo htmlspecialchars($user['email']) ?? 'nullvalue'; ?>" required>
+                <label for="email">Mail</label>
+                <input type="text" id="username" name="email" value="<?php echo htmlspecialchars($user['email']) ?? 'nullvalue'; ?>" required>
             </div>
 
             <div class="form-group">
@@ -64,12 +98,12 @@ try {
 
             <div class="form-group">
                 <label for="password">Mot de passe Actuel</label>
-                <input type="password" id="password" name="password" value="<?php echo htmlspecialchars($user['mdp']) ?? 'nullvalue'; ?>" required>
+                <input type="password" id="password" name="mdp" value="<?php echo htmlspecialchars($user['mdp']) ?? 'nullvalue'; ?>" required>
             </div>
             
             <div class="form-group">
                 <label for="NewPassword">Nouveau mot de passe</label>
-                <input type="password" id="NewPassword" name="NewPassword">
+                <input type="password" id="NewPassword" name="NewMdp">
             </div>
             <div class="form-group">
                 <label for="telephone">Téléphone</label>

@@ -25,7 +25,7 @@ try {
 }
 ?>
 
-<heaed>
+<head>
     <link rel="stylesheet" href="../static/styles/nav_admin.css">
 </head>
 
