@@ -76,6 +76,76 @@ function getPoneys(){
 
 function insertPersonne($nom, $prenom, $tel, $mail, $taille, $poids){
     global $connexion;
+    $sql = "SELECT max(idPers) as maxid FROM PERSONNE";
+    $result = $connexion->query($sql);
+    $row = $result->fetch();
+    $id = $row['maxid'] + 1;
     $stmt = $connexion->prepare("INSERT INTO PERSONNE (idPers,nomPers,prenomPers,poids,taille,tel,mail) VALUES (?, ?, ?, ?, ?, ?, ?)");
-    $stmt->execute([, $nom, $prenom, $poids, $taille, $tel, $mail]);
+    $stmt->execute([$id, $nom, $prenom, $poids, $taille, $tel, $mail]);
+    return $id;
+}
+
+function insertMoniteur($nom, $prenom, $tel, $mail, $taille, $poids, $nbHeureMax){
+    global $connexion;
+    $id = insertPersonne($nom, $prenom, $tel, $mail, $taille, $poids);
+    $stmt = $connexion->prepare("INSERT INTO ENCADRANT (idEnc,nbHeuresMax) VALUES (?, ?)");
+    $stmt->execute([$id, $nbHeureMax]);
+}
+
+function insertAdherent($nom, $prenom, $tel, $mail, $taille, $poids, $dateInscription){
+    global $connexion;
+    $id = insertPersonne($nom, $prenom, $tel, $mail, $taille, $poids);
+    $stmt = $connexion->prepare("INSERT INTO CLIENT (idCli,dateInscription) VALUES (?, ?)");
+    $stmt->execute([$id, $dateInscription]);
+    assignerNiveau($id, 1, $dateInscription);
+}
+
+function insertPoney($nomPoney, $nomRace, $poidsMax, $tailleMin){
+    global $connexion;
+    $stmt = $connexion->prepare("INSERT INTO PONEY (nomPoney,nomRace,poidsMax,tailleMin) VALUES (?, ?, ?, ?)");
+    $stmt->execute([$nomPoney, $nomRace, $poidsMax, $tailleMin]);
+}
+
+function creerCours($nbPersonne, $nomCours, $niveau){
+    global $connexion;
+    $sql = "SELECT max(idCours) as maxid FROM COURS";
+    $result = $connexion->query($sql);
+    $row = $result->fetch();
+    $id = $row['maxid'] + 1;
+    $stmt = $connexion->prepare("INSERT INTO COURS (idCours,nbPersonneMax,nomCours,niveau) VALUES (?, ?, ?, ?)");
+    $stmt->execute([$id, $nbPersonne, $nomCours, $niveau]);
+}
+
+function creerSceance($encadrant, $heureDebut, $duree, $jma, $idCours, $intitule){
+    global $connexion;
+    $sql = "SELECT max(idSeance) as maxid FROM SEANCE";
+    $result = $connexion->query($sql);
+    $row = $result->fetch();
+    $id = $row['maxid'] + 1;
+    $stmt = $connexion->prepare("INSERT INTO SEANCE (idSeance,encadrantSeance,heureDebut,duree,jma,idCours,intitule) VALUES (?, ?, ?, ?, ?, ?, ?)");
+    $stmt->execute([$id, $encadrant, $heureDebut, $duree, $jma, $idCours, $intitule]);
+}
+
+function reserveCreneau($idCli,$idSceance){
+    global $connexion;
+    $stmt = $connexion->prepare("INSERT INTO RESERVER (idCli,idSeance) VALUES (?, ?)");
+    $stmt->execute([$idCli, $idSceance]);
+}
+
+function assignerNiveau($idCli, $niveau, $dateObtention){
+    global $connexion;
+    $stmt = $connexion->prepare("INSERT INTO AVOIR (idPers,niveau,jma) VALUES (?, ?, ?)");
+    $stmt->execute([$idCli, $niveau, $dateObtention]);
+}
+
+function cotiser($idCli, $anneeCotisation, $montant){
+    global $connexion;
+    $stmt = $connexion->prepare("INSERT INTO COTISATION_CLIENT (idCli,anneeCotisation,prix) VALUES (?, ?, ?)");
+    $stmt->execute([$idCli, $anneeCotisation, $montant]);
+}
+
+function assignerPoney($idPoney, $idSceance){
+    global $connexion;
+    $stmt = $connexion->prepare("INSERT INTO PONEY_RESERVE (idPoney,idSeance) VALUES (?, ?)");
+    $stmt->execute([$idPoney, $idSceance]);
 }
