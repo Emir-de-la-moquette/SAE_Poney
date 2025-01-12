@@ -74,27 +74,28 @@ function getPoneys(){
     }
 }
 
-function insertPersonne($nom, $prenom, $tel, $mail, $taille, $poids){
+function insertPersonne($nom, $prenom, $tel, $mail, $taille, $poids,$mdp){
     global $connexion;
     $sql = "SELECT max(idPers) as maxid FROM PERSONNE";
     $result = $connexion->query($sql);
     $row = $result->fetch();
     $id = $row['maxid'] + 1;
-    $stmt = $connexion->prepare("INSERT INTO PERSONNE (idPers,nomPers,prenomPers,poids,taille,tel,mail) VALUES (?, ?, ?, ?, ?, ?, ?)");
-    $stmt->execute([$id, $nom, $prenom, $poids, $taille, $tel, $mail]);
+    $hash=hash('sha256',$mdp)
+    $stmt = $connexion->prepare("INSERT INTO PERSONNE (idPers,nomPers,prenomPers,poids,taille,tel,mail,mdp) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+    $stmt->execute([$id, $nom, $prenom, $poids, $taille, $tel, $mail, $hash]);
     return $id;
 }
 
-function insertMoniteur($nom, $prenom, $tel, $mail, $taille, $poids, $nbHeureMax){
+function insertMoniteur($nom, $prenom, $tel, $mail, $taille, $poids, $nbHeureMax,$mdp){
     global $connexion;
-    $id = insertPersonne($nom, $prenom, $tel, $mail, $taille, $poids);
+    $id = insertPersonne($nom, $prenom, $tel, $mail, $taille, $poids,$mdp);
     $stmt = $connexion->prepare("INSERT INTO ENCADRANT (idEnc,nbHeuresMax) VALUES (?, ?)");
     $stmt->execute([$id, $nbHeureMax]);
 }
 
 function insertAdherent($nom, $prenom, $tel, $mail, $taille, $poids, $dateInscription){
     global $connexion;
-    $id = insertPersonne($nom, $prenom, $tel, $mail, $taille, $poids);
+    $id = insertPersonne($nom, $prenom, $tel, $mail, $taille, $poids,$mdp);
     $stmt = $connexion->prepare("INSERT INTO CLIENT (idCli,dateInscription) VALUES (?, ?)");
     $stmt->execute([$id, $dateInscription]);
     assignerNiveau($id, 1, $dateInscription);
@@ -148,4 +149,19 @@ function assignerPoney($idPoney, $idSceance){
     global $connexion;
     $stmt = $connexion->prepare("INSERT INTO PONEY_RESERVE (idPoney,idSeance) VALUES (?, ?)");
     $stmt->execute([$idPoney, $idSceance]);
+}
+
+function utilisateurExistant($mail,$mdp){
+    global $connexion;
+    $hash=hash('sha256',$mdp)
+    $sql = "SELECT * FROM PERSONNE where mail=? and mdp=?";
+    $stmt = $connexion->prepare($sql);
+    $stmt->execute([$mail,$hash]);
+    $result = $stmt->fetch();
+    if($result){
+        return $result['idPers'];
+    }
+    else{
+        return -1;
+    }
 }

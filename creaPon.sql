@@ -7,7 +7,8 @@ CREATE OR REPLACE TABLE PERSONNE (
     poids INT,
     taille INT,
     tel VARCHAR(16) unique,
-    mail VARCHAR(128) unique
+    mail VARCHAR(128) unique,
+    mdp VARCHAR(64)
 );
 
 CREATE OR REPLACE TABLE ENCADRANT (
