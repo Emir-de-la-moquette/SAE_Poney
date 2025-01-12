@@ -7,5 +7,5 @@ function showPopup(message, success) {
     document.body.appendChild(popup);
     setTimeout(() => {
         popup.remove();
-    }, 6000);
+    }, 3000);
 }

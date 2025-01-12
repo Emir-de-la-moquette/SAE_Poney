@@ -39,28 +39,78 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $prenom = $_POST['prenom'] ?? null;
     $email = $_POST['email'] ?? null;
     $mdp = $_POST['mdp'] ?? null;
+    $NEWmdp = $_POST['NewMdp'] ?? null;
+    $taille = $_POST['taille'] ?? null;
+    $poids = $_POST['poids'] ?? null;
+    $tele = $_POST['telephone'] ?? null;
 
     // Validation de base
-    if ($nom && $email) {
-        try {
-            // Insérer les données dans la table "users"
-            $stmt = $pdo->prepare('UPDATE users SET name=:name, prenom=:prenom WHERE email=:email AND mdp=:mdp');
-            $stmt->bindParam(':name', $nom);
-            $stmt->bindParam(':prenom', $prenom);
-            $stmt->bindParam(':mdp', $mdp);
-            $stmt->bindParam(':email', $email);
-            $stmt->execute();
+    if ($mdp && $email) {
+        if (is_null($NEWmdp) or $NEWmdp == ""){
+            try {
+                // Insérer les données dans la table "users"
+                $stmt = $pdo->prepare('UPDATE users SET name=:name, prenom=:prenom, telephone=:tel, poids=:poids, taille=:taille WHERE email=:email AND mdp=:mdp');
+                $stmt->bindParam(':name', $nom);
+                $stmt->bindParam(':prenom', $prenom);
+                $stmt->bindParam(':mdp', $mdp);
+                $stmt->bindParam(':email', $email);
+                $stmt->bindParam(':tel', $tele);
+                $stmt->bindParam(':poids', $poids);
+                $stmt->bindParam(':taille', $taille);
+                $stmt->execute();
 
 
-            echo "!";
-            echo '<script>   console.log(typeof showPopup); showPopup("données enregistrer avec succès !", true);   </script>';
-            header("./setting.php");
+                echo "<p></p>";
+                echo '<script>   console.log(typeof showPopup); showPopup("données enregistrer avec succès !", true);   </script>';
+                $_SESSION["name"] = $nom;
+                $_SESSION["prenom"] = $prenom;
+                $_SESSION["telephone"] = $tele;
+                $_SESSION["taille"] = $taille;
+                $_SESSION["poids"] = $poids;
+                header("./setting.php");
 
-        } catch (Exception $e) {
-            echo 'Erreur : ' . $e->getMessage();
+            } catch (Exception $e) {
+                echo 'Erreur : ' . $e->getMessage();
+            }
+        }
+        else {
+            if ($NEWmdp == $mdp) {
+                echo "<p></p>";
+                echo '<script>   console.log(typeof showPopup); showPopup("Merci de mettre un mot de passe different !", false);   </script>';
+            }
+            else{
+                try {
+                    // Insérer les données dans la table "users"
+                    $stmt = $pdo->prepare('UPDATE users SET name=:name, prenom=:prenom, telephone=:tel, poids=:poids, taille=:taille, mdp=:NEWmdp WHERE email=:email AND mdp=:mdp');
+                    $stmt->bindParam(':name', $nom);
+                    $stmt->bindParam(':prenom', $prenom);
+                    $stmt->bindParam(':mdp', $mdp);
+                    $stmt->bindParam(':NEWmdp', $NEWmdp);
+                    $stmt->bindParam(':email', $email);
+                    $stmt->bindParam(':tel', $tele);
+                    $stmt->bindParam(':poids', $poids);
+                    $stmt->bindParam(':taille', $taille);
+                    $stmt->execute();
+    
+    
+                    echo "<p></p>";
+                    echo '<script>   console.log(typeof showPopup); showPopup("données enregistrer avec succès !", true);   </script>';
+                    $_SESSION["pswrd"] = $NEWmdp;
+                    $_SESSION["name"] = $nom;
+                    $_SESSION["prenom"] = $prenom;
+                    $_SESSION["telephone"] = $tele;
+                    $_SESSION["taille"] = $taille;
+                    $_SESSION["poids"] = $poids;
+                    header("./setting.php");
+    
+                } catch (Exception $e) {
+                    echo 'Erreur : ' . $e->getMessage();
+                } 
+            }
         }
     } else {
-        echo "Veuillez remplir tous les champs.";
+        echo "<p></p>";
+        echo '<script>   console.log(typeof showPopup); showPopup("Veuillez remplir tout les champs obligatoire !", false);   </script>';
     }
 }
 
@@ -86,8 +136,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <h1>Modifier vos informations</h1>
 
             <div class="form-group">
-                <label for="email">Mail</label>
-                <input type="text" id="username" name="email" value="<?php echo htmlspecialchars($user['email']) ?? 'nullvalue'; ?>" required>
+                <label for="email">eMail *</label>
+                <input type="email" id="username" name="email" readonly="readonly" value="<?php echo htmlspecialchars($user['email']) ?? 'nullvalue'; ?>" required>
             </div>
 
             <div class="form-group">
@@ -101,8 +151,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
 
             <div class="form-group">
-                <label for="password">Mot de passe Actuel</label>
-                <input type="password" id="password" name="mdp" value="<?php echo htmlspecialchars($user['mdp']) ?? 'nullvalue'; ?>" required>
+                <label for="password">Mot de passe Actuel *</label>
+                <input type="password" id="password" name="mdp" readonly="readonly" value="<?php echo htmlspecialchars($user['mdp']) ?? 'nullvalue'; ?>" required>
             </div>
             
             <div class="form-group">
@@ -116,12 +166,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             <div class="form-group">
                 <label for="taille">Taille</label>
-                <input type="text" id="taille" name="taille" value="<?php echo htmlspecialchars($user['taille']) ?? 'nullvalue'; ?>" required>
+                <input type="number" id="taille" name="taille" value="<?php echo htmlspecialchars($user['taille']) ?? 'nullvalue'; ?>" required>
             </div>
 
             <div class="form-group">
                 <label for="poids">Poids</label>
-                <input type="text" id="poids" name="poids" value="<?php echo htmlspecialchars($user['poids']) ?? 'nullvalue'; ?>" required>
+                <input type="number" id="poids" name="poids" value="<?php echo htmlspecialchars($user['poids']) ?? 'nullvalue'; ?>" required>
             </div>
 
             <div class="form-group" id="btnform">
