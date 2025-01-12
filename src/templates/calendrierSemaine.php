@@ -1,32 +1,44 @@
 <?php
-$Days = 1;
-    
-$date = new DateTime("2025-01-13");
-// Nombre de jours dans le mois
-$nbJourDansMois = $date->format('t'); // 't' retourne le nombre de jours dans le mois
-$jourDebutMois = $date->format('N')+1-$date->format('d'); // Le jour de la semaine du 1er jour du mois (1 = lundi, 7 = dimanche)
-if($jourDebutMois<0)$jourDebutMois = ($jourDebutMois%7)+7;
+$exemplecours = ['Lundi'=>[['debut'=>5,
+                            'fin'=>7,
+                            'intitulé'=>'aqua poney',
+                            'description'=>'des poneys qui font joujou dans l eau'],
+                           ['debut'=>8,
+                            'fin'=>9,
+                            'intitulé'=>'soulever de poney',
+                            'description'=>'on soulève des poneys et ouais']],
+                 'Mardi'=>[['debut'=>8,
+                            'fin'=>12,
+                            'intitulé'=>'soulever de poney2',
+                            'description'=>'des poneys qui font joujou dans l eau']],
+                 'Mercredi'=>[],
+                 'Jeudi'=>[],
+                 'Vendredi'=>[],
+                 'Samedi'=>[],
+                 'Dimanche'=>[]];
 
-// header basique avec les jours
 echo '<table border="1">';
 echo '<tr>';
-echo '<th>Lundi</th>';
-echo '<th>Mardi</th>';
-echo '<th>Mercredi</th>';
-echo '<th>Jeudi</th>';
-echo '<th>Vendredi</th>';
-echo '<th>Samedi</th>';
-echo '<th>Dimanche</th>';
+echo '<th></th>';
+foreach ($exemplecours as $key => $value) {
+    echo "<th>$key</th>";
+}
 echo '</tr>';
 
-for ($i=0; $i < 6 ; $i++) {
+for ($i= 0;$i<24;$i++){
     echo '<tr>';
-    for($j=1; $j < 8;$j++) {
-        if($j+$i*7 >= $jourDebutMois ){
-            if ($Days > $nbJourDansMois)$Days = 1;
-            echo "<td>$Days</td>";
-            $Days++;
-        }else{
+    printf("<th>%s - %s h</th>", $i, ($i+1)%24);
+    foreach ($exemplecours as $jour=>$cours) {
+        $pascours = true;
+        foreach ($cours as $value) {
+            if ($i>=$value['debut'] && ($i<$value['fin'] || $i==$value['debut'])){
+                $pascours = false;
+                if ($i==$value['debut']) {
+                    printf("<td rowspan=%s><div><h2>%s</h2><p>%s</p></div></td>",$value['fin']-$value['debut'],$value['intitulé'],$value['description']);
+                }
+            }
+        }
+        if($pascours) {
             echo "<td></td>";
         }
     }
