@@ -1,3 +1,5 @@
+<script src="../static/script/popup_valid.js"></script>
+
 <?php
 
 session_start();
@@ -49,8 +51,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt->bindParam(':email', $email);
             $stmt->execute();
 
-            
-            echo "Informations enregistrées avec succès !";
+
+            echo "!";
+            echo '<script>   console.log(typeof showPopup); showPopup("données enregistrer avec succès !", true);   </script>';
             header("./setting.php");
 
         } catch (Exception $e) {
@@ -70,6 +73,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../static/styles/settings.css">
+    <link rel="stylesheet" href="../static/styles/popup_valid.css">
     <title>Paramètres</title>
 </head>
 <body>

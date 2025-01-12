@@ -39,7 +39,7 @@ try {
 </div>
 <nav>
     <ul>
-        <a href=''><li>Gestionnaire</li></a>
+        <a href='./admin.php'><li>Gestionnaire</li></a>
         <a href='./admin.php'><li>Plannings</li></a>
         <a href='./settings.php'><li>Paramètres</li></a>
         <a href='../static/script/logout.php'><li class="logout">Déconnexion</li></a>
