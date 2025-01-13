@@ -2,7 +2,7 @@
 <?php
 $Days = 1;
     
-var_dump($_GET['date'] ?? "now");
+//var_dump($_GET['date'] ?? "now");
 $date = new DateTime($_GET['date'] ?? "now");
 
 $mois = ["Janvier","Fevrier","Mars","Avril","Mai","Juin","Juillet","Aout","Septembre","Octobre","Novembre","Decembre"];
@@ -35,10 +35,10 @@ for ($i=0; $i < 6 ; $i++) {
         if($j+$i*7 >= $jourDebutMois ){
             if ($Days > $nbJourDansMois){
                 $Days = 1;
-                var_dump($lemoischiffre);
+                //var_dump($lemoischiffre);
                 $lemoischiffre = $date->modify("+2 month")->format('m');
                 $lemoischiffre = $date->modify("-1 month")->format('m');
-                var_dump($lemoischiffre);
+                //var_dump($lemoischiffre);
             }
             echo "<td><a class='jourMois' href='/src/templates/planning.php?date=$annee-$lemoischiffre-$Days'>$Days</a></td>";
             $Days++;
