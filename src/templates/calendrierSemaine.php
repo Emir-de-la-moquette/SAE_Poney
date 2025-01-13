@@ -60,7 +60,7 @@ for ($i= 8;$i<20;$i++){
             if ($i>=$value['debut'] && ($i<$value['fin'] || $i==$value['debut'])){
                 $pascours = false;
                 if ($i==$value['debut']) {
-                    printf("<td rowspan=%s class='tdsem'><a href=''><div class='cours'><h3>%s</h3></div></a></td>",$value['fin']-$value['debut'],$value['intitulé']);
+                    printf("<td rowspan=%s class='tdsem'><a href='/src/templates/seance.php?id=%s'><div class='cours'><h3>%s</h3></div></a></td>",$value['fin']-$value['debut'],$value['id'],$value['intitulé']);
                 }
             }
         }
