@@ -10,6 +10,7 @@ INSERT INTO PERSONNE(idPers,nomPers,prenomPers,poids,taille,tel,mail,mdp) VALUES
 (9,'BOULA','Alban',85,195,'06 12 34 56 86','alban1.boula@mail.com','00b109cf1123a591253cc534b17e5268eb8fc2fbb7d6772de7a55c135ef1282f'),
 (10,'PHEURE','Kwoï',55,145,'06 12 34 56 87','kwoi.pheure@mailcom','a8d9c1ca0e1bafff1aefae52e2cc01b343f58f826efa461eb24e2a329722854d'),
 (11,'WHITE','Walter',98,180,'06 12 34 56 88','ww.ww@mail.com','dcfa237943d4fd7e2a514ca54642efaccd2cdbd5003bfb19a1e70737273e1190'),
+(13,'UWU','OWO',100,100,'06 06 06 06 06','uwu@mail.com','dcfa237943d4fd7e2a514ca54642efaccd2cdbd5003bfb19a1e70737273e1190'),
 (12,'PLUDAINSPI','Jay',69,142,'06 12 34 56 89','jay.pludeinspi@mail.com','b9e50e0e8b504aa57a1bb6711ee832ee4ce9c641a1618b91833582382c709023');
 --bonjour
 --coucou
@@ -32,6 +33,9 @@ INSERT INTO ENCADRANT(idEnc,nbHeuresMax) VALUES
 (5,10),
 (6,20),
 (7,15);
+
+INSERT INTO ADMIN(idAdm) VALUES
+(13);
 
 INSERT INTO CLIENT(idCli,dateInscription) VALUES
 (8,'2020-07-19'),
