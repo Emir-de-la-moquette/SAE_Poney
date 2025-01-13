@@ -1,12 +1,10 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestion des ressources internes</title>
-    <link rel="stylesheet" href="../static/styles/calendrier.css">
-</head>
+
 <?php
+$date = new DateTime($_GET['date'] ?? "now");
+$premierJourSemaine = $date->format('d') - $date->format('N') + 1;
+$mois = $date->format('m');
+$nbJourDansMoisDernier = $date->modify("last day of previous month")->format('t');
+
 $exemplecours = ['Lundi'=>[['debut'=>9,
                             'fin'=>10,
                             'intitulé'=>'aqua poney',
@@ -29,7 +27,18 @@ echo '<table border="1">';
 echo '<tr class="trsem">';
 echo '<th class="thsem"></th>';
 foreach ($exemplecours as $key => $value) {
-    echo "<th class='thsem><h2>$key</h2></th>";
+    $jour = $premierJourSemaine;
+    if($premierJourSemaine<=0){
+        $jour=$nbJourDansMoisDernier+$premierJourSemaine;
+        $mois = $date->modify('-1 month')->format('m');
+        $annee = $date->format('o');
+    } elseif ($premierJourSemaine==1) {
+        $mois = $date->format('m');
+        $annee = $date->format('o');
+    }
+    $date->modify('+1 month');
+    echo "<th class='thsem'><h2>$key</h2><p>$jour/$mois/$annee</p></th>";
+    $premierJourSemaine++;
 }
 echo '</tr>';
 
@@ -52,6 +61,5 @@ for ($i= 8;$i<20;$i++){
     }
     echo '</tr>';
 }
-
-
+echo '</table>';
 ?>
