@@ -136,19 +136,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
             <div class="form-group">
                 <label for="telephone">Téléphone</label>
-                <input type="text" id="telephone" name="telephone" value="<?php echo htmlspecialchars($user['tel']) ?? 'nullvalue'; ?>" required>
+                <input type="text" id="telephone" name="telephone" value="<?php echo htmlspecialchars($user['tel']) ?? 'nullvalue'; ?>">
             </div>
 
             <div class="form-group">
                 <label for="taille">Taille</label>
-                <input type="number" id="taille" name="taille" value="<?php echo htmlspecialchars($user['taille']) ?? 'nullvalue'; ?>" required>
+                <input type="number" id="taille" name="taille" value="<?php echo htmlspecialchars($user['taille']) ?? 'nullvalue'; ?>">
             </div>
 
             <div class="form-group">
                 <label for="poids">Poids</label>
-                <input type="number" id="poids" name="poids" value="<?php echo htmlspecialchars($user['poids']) ?? 'nullvalue'; ?>" required>
+                <input type="number" id="poids" name="poids" value="<?php echo htmlspecialchars($user['poids']) ?? 'nullvalue'; ?>">
             </div>
-            <?php if (isAdherent($userNAV["user"], $_SESSION['pswrd']) ){
+            <?php echo $userNAV["mail"];echo $_SESSION['pswrd'];
+            if (isAdherent($userNAV["mail"], $_SESSION['pswrd']) ){
                 echo '<div class="form-group">';
                 echo    '<label for="lvl">Niveau</label>';
                 echo    '<select id="lvl" name="lvl">';

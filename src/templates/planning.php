@@ -23,7 +23,7 @@
                 <?php include 'calendrierSemaine.php';?>
             </div>
         </div>
-        <?php include 'footer.php';?>
+        
     </main>
 </body>
 </html>

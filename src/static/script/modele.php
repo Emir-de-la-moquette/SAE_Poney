@@ -1,12 +1,13 @@
 <?php
-$dsn = "mysql:dbname="."sae_mlp".";host="."127.0.0.1";
+$dsn = "mysql:dbname="."DBchaloine".";host="."servinfo-maria";
 try{
-    $connexion = new PDO($dsn, "root", "clermont");
+    $connexion = new PDO($dsn, "chaloine", "chaloine");
 }
 catch(PDOException $e){
     printf("Error connecting to database: %s", $e->getMessage());
     exit();
 }
+
 
 function getMoniteur(){
     global $connexion;
@@ -201,7 +202,7 @@ function isMoniteur($mail, $mdp){
 function isAdherent($mail, $mdp){
     global $connexion;
     $hash=hash('sha256',$mdp);
-    $sql = "SELECT * FROM PERSONNE NATURAL JOIN CLIENT where mail=? and mdp=? and idPers=idEnc";
+    $sql = "SELECT * FROM PERSONNE NATURAL JOIN CLIENT where mail=? and mdp=? and idPers=idCli";
     $stmt = $connexion->prepare($sql);
     $stmt->execute([$mail,$hash]);
     $result = $stmt->fetch();
@@ -274,3 +275,11 @@ function updateUtilisateur($email, $mdp, $nom, $prenom, $telephone, $taille, $po
     }
 }
 
+function getLvl($mail){
+    global $connexion;
+    $sql = "SELECT max(niveau) FROM OBTENIR_LVL NATURAL JOIN PERSONNE where mail=?";
+    $stmt = $connexion->prepare($sql);
+    $stmt->execute($mail);
+    $result = $stmt->fetch();
+    return $result;
+}
