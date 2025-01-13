@@ -22,14 +22,14 @@ table {
     align-items: center;
     justify-content: center;
 }
-td,tr{
+.tdsem,.trsem{
     border: none;
 }
-td {
+.tdsem {
     width: 200px;
     height: 50px;
 }
 
-th{
+.thsem{
     background-color: orange;
 }

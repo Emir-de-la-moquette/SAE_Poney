@@ -7,8 +7,6 @@
     <link rel="stylesheet" href="../static/styles/calendrier.css">
 </head>
 <?php
-include 'navbar.php';
-
 $exemplecours = ['Lundi'=>[['debut'=>9,
                             'fin'=>10,
                             'intitulé'=>'aqua poney',
@@ -28,28 +26,28 @@ $exemplecours = ['Lundi'=>[['debut'=>9,
                  'Dimanche'=>[]];
 
 echo '<table border="1">';
-echo '<tr>';
-echo '<th></th>';
+echo '<tr class="trsem">';
+echo '<th class="thsem"></th>';
 foreach ($exemplecours as $key => $value) {
-    echo "<th><h2>$key</h2></th>";
+    echo "<th class='thsem><h2>$key</h2></th>";
 }
 echo '</tr>';
 
 for ($i= 8;$i<20;$i++){
-    echo '<tr>';
-    printf("<th>%s - %s h</th>", $i, ($i+1)%24);
+    echo '<tr class="trsem">';
+    printf("<th class='thsem'>%s - %s h</th>", $i, ($i+1)%24);
     foreach ($exemplecours as $jour=>$cours) {
         $pascours = true;
         foreach ($cours as $value) {
             if ($i>=$value['debut'] && ($i<$value['fin'] || $i==$value['debut'])){
                 $pascours = false;
                 if ($i==$value['debut']) {
-                    printf("<td rowspan=%s><a href=''><div class='cours'><h3>%s</h3></div></a></td>",$value['fin']-$value['debut'],$value['intitulé']);
+                    printf("<td rowspan=%s class='tdsem'><a href=''><div class='cours'><h3>%s</h3></div></a></td>",$value['fin']-$value['debut'],$value['intitulé']);
                 }
             }
         }
         if($pascours) {
-            echo "<td></td>";
+            echo "<td class='tdsem'></td>";
         }
     }
     echo '</tr>';
