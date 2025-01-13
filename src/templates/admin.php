@@ -1,6 +1,5 @@
 <?php
-    require "../static/script/modele.php";
-    $dsn = "mysql:dbname="."DBchaloine".";host="."servinfo-maria";
+    require_once "../static/script/modele.php";
     try{
         $connexion = new PDO($dsn, "chaloine", "chaloine");
     }
