@@ -195,3 +195,12 @@ function isAdherent($mail, $mdp){
         return false;
     }
 }
+
+function getCours($dateDebut,$dateFin){
+    global $connexion;
+    $sql = "SELECT * FROM SEANCE NATURAL JOIN COURS where jma>=? and jma=<?";
+    $stmt = $connexion->prepare($sql);
+    $stmt->execute([$dateDebut,$dateFin]);
+    $result = $stmt->fetch();
+    var_dump($result);
+}

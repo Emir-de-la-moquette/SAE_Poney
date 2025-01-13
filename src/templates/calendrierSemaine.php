@@ -1,7 +1,13 @@
 
 <?php
+
+include "../static/scriptmodele";
+
+#getCours("2024-11-20","2024-11-24");
+
 $date = new DateTime($_GET['date'] ?? "now");
 $premierJourSemaine = $date->format('d') - $date->format('N') + 1;
+
 $mois = $date->format('m');
 $nbJourDansMoisDernier = $date->modify("last day of previous month")->format('t');
 
