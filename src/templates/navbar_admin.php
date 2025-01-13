@@ -44,13 +44,13 @@ try {
         <?php 
         if (isAdmin($userNAV["user"], $_SESSION['pswrd'])) {
             echo "<a href='./admin.php'><li>Gestionnaire</li></a>";
-            echo "<a href='./admin.php'><li>Plannings</li></a>";
+            echo "<a href='./planning.php'><li>Plannings</li></a>";
         } elseif (isMoniteur($userNAV["user"], $_SESSION['pswrd'])) {
             echo "<a href='./admin.php'><li>Informations</li></a>";
-            echo "<a href='./admin.php'><li>Plannings</li></a>";
+            echo "<a href='./planning.php'><li>Plannings</li></a>";
         } else {
             echo "<a href='./infoclient.php'><li>Informations du compte</li></a>";
-            echo "<a href='./admin.php'><li>Planning</li></a>";
+            echo "<a href='./planning.php'><li>Planning</li></a>";
         }
         ?>
         <a href='./settings.php'><li>Paramètres</li></a>
