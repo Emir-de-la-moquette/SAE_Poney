@@ -1,7 +1,7 @@
 <?php
-$dsn = "mysql:dbname="."sae_mlp".";host="."127.0.0.1";
+$dsn = "mysql:dbname="."DBchaloine".";host="."servinfo-maria";
 try{
-    $connexion = new PDO($dsn, "root", "clermont");
+    $connexion = new PDO($dsn, "chaloine", "chaloine");
 }
 catch(PDOException $e){
     printf("Error connecting to database: %s", $e->getMessage());
@@ -136,7 +136,7 @@ function reserveCreneau($idCli,$idSceance){
 
 function assignerNiveau($idCli, $niveau, $dateObtention){
     global $connexion;
-    $stmt = $connexion->prepare("INSERT INTO obtenir_lvl (idPers,niveau,jma) VALUES (?, ?, ?)");
+    $stmt = $connexion->prepare("INSERT INTO AVOIR (idPers,niveau,jma) VALUES (?, ?, ?)");
     $stmt->execute([$idCli, $niveau, $dateObtention]);
 }
 
@@ -166,6 +166,7 @@ function utilisateurExistant($mail,$mdp){
         return -1;
     }
 }
+
 
 function isUtilisateurExistant($mail,$mdp){
     global $connexion;

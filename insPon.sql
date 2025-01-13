@@ -1,20 +1,28 @@
 INSERT INTO PERSONNE(idPers,nomPers,prenomPers,poids,taille,tel,mail,mdp) VALUES 
-(1,'ULAIT','Jacques',80,180,'06 12 34 56 78','ulait.jacques@mail.com','a91b1d2f7f5e74b9b8bdb57b92ac4e2f56ab0b14d9b34f7dca6c94e255fa032b'),
-(2,'ULAIT','Yvonne',60,160,'06 12 34 56 79','ulait.yvonne@mail.com','8d969eef6ecad3c29a3a629280e686cf0f31f75e0d4d764ffde420d47f115f99'),
-(3,'MENVUSAT','Gérard',70,170,'06 12 34 56 80','gérard.menvusat@mail.com','378beaf5b14a3c5668b1f9e37b76bce7b344fe4e1b7f8f2999e590ab4b5d9b59'),
-(4,'LADEN','Ben',50,150,'06 12 34 56 81','laden99.ben@mail.com','e9f6d1f3bcda75e7e3f2a1b064e26e7aaf0e527e6e56b10f6ff7d7124cd3e437'),
-(5,'TERRIEUR','Alex',90,210,'06 12 34 56 82','alex.terrieur@mail.com','2c6ee24b09816a6f14f95d1698b24ead'),
-(6,'TERRIEUR','Alain',130,190,'06 12 34 56 83','alain.terrieur@mail.com','f8f8e098c680a64e0e1b8814eb4661d864699cc8a3c6a5f08e54d4045b70904d'),
-(7,'LAPORTE','Jean-Phonse',75,175,'06 12 34 56 84','jean-phonse.laporte@mail.com','c9f0f895fb98ab9159f51fd0297e236d'),
-(8,'DURE','Laure',65,165,'06 12 34 56 85','laure.dure@mail.com','7f1b8e2e92cc8e9ec0d6f5eae41eab21b444e2f4970a5ae1be5e50b2c3abf3d0'),
-(9,'BOULA','Alban',85,195,'06 12 34 56 86','alban1.boula@mail.com','1a0bc2560d4b6d8cb0a9ef30c018a1b25dfb44c320d907b4fc8d88a402054009'),
-(10,'PHEURE','Kwoï',55,145,'06 12 34 56 87','kwoi.pheure@mailcom','fcdeb6f03b31b1c0d6258db2e7b6490736bb09e6e24d8d375470a1ab632fa60a'),
-(11,'WHITE','Walter',98,180,'06 12 34 56 88','ww.ww@mail.com','d7f8d6b65c7c6f5b8d8c547a30a9e342ea7c2fbb3a9f800e6b1d3d3b8b2bc30d'),
-(12,'PLUDAINSPI','Jay',69,142,'06 12 34 56 89','jay.pludeinspi@mail.com','d2d2d2d2f0e3c2e47ff37c428ab2b7c2e8bb47fe4d94a69cf8a153fdca9c15b2'),
-(13,'quoi','feur',69,142,'14 14 14 14 14','feur@mail.com','d2d2d2d2f0e3c2e47ff37c428ab2b7c2e8bb47fe4d94a69cf8a153fdca9c15b2');
-
-INSERT INTO ADMIN(idAdm) VALUES
-(13);
+(1,'ULAIT','Jacques',80,180,'06 12 34 56 78','ulait.jacques@mail.com','2cb4b1431b84ec15d35ed83bb927e27e8967d75f4bcd9cc4b25c8d879ae23e18'),
+(2,'ULAIT','Yvonne',60,160,'06 12 34 56 79','ulait.yvonne@mail.com','110812f67fa1e1f0117f6f3d70241c1a42a7b07711a93c2477cc516d9042f9db'),
+(3,'MENVUSAT','Gérard',70,170,'06 12 34 56 80','gérard.menvusat@mail.com','6a1db92b1b6f2a1f8ed03daf24b5569537167683081322067e88c23efa55f097'),
+(4,'LADEN','Ben',50,150,'06 12 34 56 81','laden99.ben@mail.com','b909c6702e754e2401640e5f77739027c0c9dd32c871bf8ccf31bc16f8334552'),
+(5,'TERRIEUR','Alex',90,210,'06 12 34 56 82','alex.terrieur@mail.com','106b086224a4d945eae25f7be3805a931a873270326dd868b0e41f71ee9fff72'),
+(6,'TERRIEUR','Alain',130,190,'06 12 34 56 83','alain.terrieur@mail.com','31207a2065f46a5b948fce6fe5c13e85abaf5631e2f894b47dcd4fce14f6c57b'),
+(7,'LAPORTE','Jean-Phonse',75,175,'06 12 34 56 84','jean-phonse.laporte@mail.com','c6cd4cf936fd5ad884ed4c278d147982124a6b7df27d95ddf58cd7a60660664c'),
+(8,'DURE','Laure',65,165,'06 12 34 56 85','laure.dure@mail.com','533b25dbc5b0335cda2170239b85d97bdf9e3a1f789c3f276941153b29efa8a8'),
+(9,'BOULA','Alban',85,195,'06 12 34 56 86','alban1.boula@mail.com','00b109cf1123a591253cc534b17e5268eb8fc2fbb7d6772de7a55c135ef1282f'),
+(10,'PHEURE','Kwoï',55,145,'06 12 34 56 87','kwoi.pheure@mailcom','a8d9c1ca0e1bafff1aefae52e2cc01b343f58f826efa461eb24e2a329722854d'),
+(11,'WHITE','Walter',98,180,'06 12 34 56 88','ww.ww@mail.com','dcfa237943d4fd7e2a514ca54642efaccd2cdbd5003bfb19a1e70737273e1190'),
+(12,'PLUDAINSPI','Jay',69,142,'06 12 34 56 89','jay.pludeinspi@mail.com','b9e50e0e8b504aa57a1bb6711ee832ee4ce9c641a1618b91833582382c709023');
+--bonjour
+--coucou
+--alt+f4
+--azerty1234
+--inside
+--outside
+--FBI
+--poubelle
+--queue
+--feur
+--UwU
+--mot de passe
 
 INSERT INTO ENCADRANT(idEnc,nbHeuresMax) VALUES 
 (1,20),
@@ -47,11 +55,11 @@ INSERT INTO RACE(nomRace,description) VALUES
 ('Licorne','Cheval magique'),
 ('Alicorne','Cheval ailé magique'),
 ('Girafe','Cheval à long cou'),
-('Hippotame','Cheval amphibie');
+('Hippopotame','Cheval amphibie');
 
 INSERT INTO PONEY(idPoney,nomPoney,poidsMax,tailleMin,nomRace) VALUES
 (1,'Sophie',170,190,'Girafe'),
-(2,'Hyppoglouton',250,150,'Hippotame'),
+(2,'Hyppoglouton',250,150,'Hippopotame'),
 (3,'Bramble', 90, 110, 'Poney'),
 (4,'Cinnamon', 80, 115, 'Poney'),
 (5,'Rusty', 310, 120, 'Poney'),
@@ -115,13 +123,13 @@ INSERT INTO OBTENIR_LVL(idPers, niveau, jma) VALUES
 (12, 1, '2023-01-01');
 
 INSERT INTO SEANCE(idSeance, encadrantSeance, intitule, duree, jma, heureDebut,idCours) VALUES
-(1, 1, 'Séance débutants', 1, '2024-11-20', 9,1),
-(2, 2, 'Séance avancés', 1, '2024-11-20', 10,2),
-(3, 3, 'Séance intermédiaires', 2, '2024-11-20', 12,3),
-(4, 4, 'Séance enfants', 1, '2024-11-21', 9,4),
-(5, 5, 'Séance adultes', 2, '2024-11-21', 14,5),
-(6, 6, 'Séance seniors', 1, '2024-11-22', 15,6),
-(7, 7, 'Séance compétitions', 2, '2024-11-23', 11,7);
+(1, 1, 'Séance débutants', 1, '2025-01-20', 9,1),
+(2, 2, 'Séance avancés', 1, '2025-01-20', 10,2),
+(3, 3, 'Séance intermédiaires', 2, '2025-01-20', 12,3),
+(4, 4, 'Séance enfants', 1, '2025-01-21', 9,4),
+(5, 5, 'Séance adultes', 2, '2025-01-21', 14,5),
+(6, 6, 'Séance seniors', 1, '2025-01-22', 15,6),
+(7, 7, 'Séance compétitions', 2, '2025-01-23', 11,7);
 
 INSERT INTO PONEY_RESERVE(idSeance, idPoney) VALUES
 (1, 1),
