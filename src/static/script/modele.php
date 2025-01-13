@@ -135,7 +135,7 @@ function reserveCreneau($idCli,$idSceance){
 
 function assignerNiveau($idCli, $niveau, $dateObtention){
     global $connexion;
-    $stmt = $connexion->prepare("INSERT INTO AVOIR (idPers,niveau,jma) VALUES (?, ?, ?)");
+    $stmt = $connexion->prepare("INSERT INTO OBTENIR_LVL (idPers,niveau,jma) VALUES (?, ?, ?)");
     $stmt->execute([$idCli, $niveau, $dateObtention]);
 }
 

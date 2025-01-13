@@ -16,6 +16,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestion des ressources internes</title>
     <link rel="stylesheet" href="../static/styles/admin.css">
+    <link rel="stylesheet" href="../static/styles/bouton.css">
 </head>
 <body>
     <div class="container">
@@ -45,7 +46,7 @@
                         <?php
                         getMoniteur();
                         ?>
-                    <button >Ajouter un moniteur +</button>
+                    <a href="ajoutMoniteur.php"><button>Ajouter un moniteur +</button></a>
                 </div>
             </section>
 
