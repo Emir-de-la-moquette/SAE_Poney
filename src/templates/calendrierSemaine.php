@@ -1,19 +1,28 @@
 
 <?php
+
+//include "../static/scriptmodele";
+
+#getCours("2024-11-20","2024-11-24");
+
 $date = new DateTime($_GET['date'] ?? "now");
 $premierJourSemaine = $date->format('d') - $date->format('N') + 1;
+
 $mois = $date->format('m');
 $nbJourDansMoisDernier = $date->modify("last day of previous month")->format('t');
 
-$exemplecours = ['Lundi'=>[['debut'=>9,
+$exemplecours = ['Lundi'=>[['id'=>1,
+                            'debut'=>9,
                             'fin'=>10,
                             'intitulé'=>'aqua poney',
                             'description'=>'des poneys qui font joujou dans l eau'],
-                           ['debut'=>8,
+                           ['id'=>2,
+                            'debut'=>8,
                             'fin'=>9,
                             'intitulé'=>'soulever de poney',
                             'description'=>'on soulève des poneys et ouais']],
-                 'Mardi'=>[['debut'=>8,
+                 'Mardi'=>[['id'=>3,
+                            'debut'=>8,
                             'fin'=>12,
                             'intitulé'=>'soulever de poney2',
                             'description'=>'des poneys qui font joujou dans l eau']],

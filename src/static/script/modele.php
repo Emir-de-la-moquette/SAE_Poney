@@ -213,6 +213,16 @@ function isAdherent($mail, $mdp){
     }
 }
 
+
+function getCours($dateDebut,$dateFin){
+    global $connexion;
+    $sql = "SELECT * FROM SEANCE NATURAL JOIN COURS where jma>=? and jma=<?";
+    $stmt = $connexion->prepare($sql);
+    $stmt->execute([$dateDebut,$dateFin]);
+    $result = $stmt->fetch();
+    var_dump($result);
+}
+
 function isAdmin($mail, $mdp){
     global $connexion;
     $hash=hash('sha256',$mdp);
@@ -263,3 +273,4 @@ function updateUtilisateur($email, $mdp, $nom, $prenom, $telephone, $taille, $po
         throw new Exception("Erreur lors de la mise à jour de l'utilisateur : " . $e->getMessage());
     }
 }
+

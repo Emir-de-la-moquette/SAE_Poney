@@ -12,12 +12,15 @@
 </head>
 <body>
     <main>
-        <div class="">
-            <?php include 'calendrierMois.php';?>
+        <div>
+            <div class="">
+                <?php include 'calendrierMois.php';?>
+            </div>
+            <div class="">
+                <?php include 'calendrierSemaine.php';?>
+            </div>
         </div>
-        <div class="">
-            <?php include 'calendrierSemaine.php';?>
-        </div>
+        <?php include 'footer.php';?>
     </main>
 </body>
 </html>
