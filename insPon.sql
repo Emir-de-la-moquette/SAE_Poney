@@ -1,16 +1,20 @@
 INSERT INTO PERSONNE(idPers,nomPers,prenomPers,poids,taille,tel,mail,mdp) VALUES 
-(1,'ULAIT','Jacques',80,180,'06 12 34 56 78','ulait.jacques@mail.com','a91b1d2f7f5e74b9b8bdb57b92ac4e2f56ab0b14d9b34f7dca6c94e255fa032b'),--bonjour
-(2,'ULAIT','Yvonne',60,160,'06 12 34 56 79','ulait.yvonne@mail.com','8d969eef6ecad3c29a3a629280e686cf0f31f75e0d4d764ffde420d47f115f99'),--coucou
-(3,'MENVUSAT','Gérard',70,170,'06 12 34 56 80','gérard.menvusat@mail.com','378beaf5b14a3c5668b1f9e37b76bce7b344fe4e1b7f8f2999e590ab4b5d9b59'),--alt+f4
-(4,'LADEN','Ben',50,150,'06 12 34 56 81','laden99.ben@mail.com','e9f6d1f3bcda75e7e3f2a1b064e26e7aaf0e527e6e56b10f6ff7d7124cd3e437'),--azerty1234
-(5,'TERRIEUR','Alex',90,210,'06 12 34 56 82','alex.terrieur@mail.com','2c6ee24b09816a6f14f95d1698b24ead'),--inside
-(6,'TERRIEUR','Alain',130,190,'06 12 34 56 83','alain.terrieur@mail.com','f8f8e098c680a64e0e1b8814eb4661d864699cc8a3c6a5f08e54d4045b70904d'),--outside
-(7,'LAPORTE','Jean-Phonse',75,175,'06 12 34 56 84','jean-phonse.laporte@mail.com','c9f0f895fb98ab9159f51fd0297e236d'),--FBI
-(8,'DURE','Laure',65,165,'06 12 34 56 85','laure.dure@mail.com','7f1b8e2e92cc8e9ec0d6f5eae41eab21b444e2f4970a5ae1be5e50b2c3abf3d0'),--poubelle
-(9,'BOULA','Alban',85,195,'06 12 34 56 86','alban1.boula@mail.com','1a0bc2560d4b6d8cb0a9ef30c018a1b25dfb44c320d907b4fc8d88a402054009'),--queue
-(10,'PHEURE','Kwoï',55,145,'06 12 34 56 87','kwoi.pheure@mailcom','fcdeb6f03b31b1c0d6258db2e7b6490736bb09e6e24d8d375470a1ab632fa60a'),--feur
-(11,'WHITE','Walter',98,180,'06 12 34 56 88','ww.ww@mail.com','d7f8d6b65c7c6f5b8d8c547a30a9e342ea7c2fbb3a9f800e6b1d3d3b8b2bc30d'),--UwU
-(12,'PLUDAINSPI','Jay',69,142,'06 12 34 56 89','jay.pludeinspi@mail.com','d2d2d2d2f0e3c2e47ff37c428ab2b7c2e8bb47fe4d94a69cf8a153fdca9c15b2');--mot de passe
+(1,'ULAIT','Jacques',80,180,'06 12 34 56 78','ulait.jacques@mail.com','a91b1d2f7f5e74b9b8bdb57b92ac4e2f56ab0b14d9b34f7dca6c94e255fa032b'),
+(2,'ULAIT','Yvonne',60,160,'06 12 34 56 79','ulait.yvonne@mail.com','8d969eef6ecad3c29a3a629280e686cf0f31f75e0d4d764ffde420d47f115f99'),
+(3,'MENVUSAT','Gérard',70,170,'06 12 34 56 80','gérard.menvusat@mail.com','378beaf5b14a3c5668b1f9e37b76bce7b344fe4e1b7f8f2999e590ab4b5d9b59'),
+(4,'LADEN','Ben',50,150,'06 12 34 56 81','laden99.ben@mail.com','e9f6d1f3bcda75e7e3f2a1b064e26e7aaf0e527e6e56b10f6ff7d7124cd3e437'),
+(5,'TERRIEUR','Alex',90,210,'06 12 34 56 82','alex.terrieur@mail.com','2c6ee24b09816a6f14f95d1698b24ead'),
+(6,'TERRIEUR','Alain',130,190,'06 12 34 56 83','alain.terrieur@mail.com','f8f8e098c680a64e0e1b8814eb4661d864699cc8a3c6a5f08e54d4045b70904d'),
+(7,'LAPORTE','Jean-Phonse',75,175,'06 12 34 56 84','jean-phonse.laporte@mail.com','c9f0f895fb98ab9159f51fd0297e236d'),
+(8,'DURE','Laure',65,165,'06 12 34 56 85','laure.dure@mail.com','7f1b8e2e92cc8e9ec0d6f5eae41eab21b444e2f4970a5ae1be5e50b2c3abf3d0'),
+(9,'BOULA','Alban',85,195,'06 12 34 56 86','alban1.boula@mail.com','1a0bc2560d4b6d8cb0a9ef30c018a1b25dfb44c320d907b4fc8d88a402054009'),
+(10,'PHEURE','Kwoï',55,145,'06 12 34 56 87','kwoi.pheure@mailcom','fcdeb6f03b31b1c0d6258db2e7b6490736bb09e6e24d8d375470a1ab632fa60a'),
+(11,'WHITE','Walter',98,180,'06 12 34 56 88','ww.ww@mail.com','d7f8d6b65c7c6f5b8d8c547a30a9e342ea7c2fbb3a9f800e6b1d3d3b8b2bc30d'),
+(12,'PLUDAINSPI','Jay',69,142,'06 12 34 56 89','jay.pludeinspi@mail.com','d2d2d2d2f0e3c2e47ff37c428ab2b7c2e8bb47fe4d94a69cf8a153fdca9c15b2'),
+(13,'quoi','feur',69,142,'14 14 14 14 14','feur@mail.com','d2d2d2d2f0e3c2e47ff37c428ab2b7c2e8bb47fe4d94a69cf8a153fdca9c15b2');
+
+INSERT INTO ADMIN(idAdm) VALUES
+(13);
 
 INSERT INTO ENCADRANT(idEnc,nbHeuresMax) VALUES 
 (1,20),
