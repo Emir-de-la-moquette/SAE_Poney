@@ -1,3 +1,7 @@
+body {
+    display: flex;
+}
+
 main>div {
     display: flex;
 }

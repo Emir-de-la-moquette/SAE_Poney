@@ -1,4 +1,4 @@
-<?php include 'navbar.php';?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -11,12 +11,15 @@
     <title>Document</title>
 </head>
 <body>
+        <aside class="sidebar">
+            <?php include "./navbar_admin.php" ?>
+        </aside>
     <main>
         <div>
             <div class="">
                 <?php include 'calendrierMois.php';?>
             </div>
-            <div class="">
+            <div class="semaine">
                 <?php include 'calendrierSemaine.php';?>
             </div>
         </div>
