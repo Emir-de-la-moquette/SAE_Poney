@@ -1,32 +1,54 @@
 <?php
+
 // Start session
 session_start();
 
 // Check if user is already logged in
 if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
-    header("Location: welcome.php");
+    header("Location: admin.php");
     exit();
 }
 
 // Handle login errors
 $error = '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Dummy credentials for demonstration
-    $validUsername = "feur";
-    $validPassword = "feur";
 
     // Get submitted data
     $username = $_POST['username'] ?? '';
     $password = $_POST['password'] ?? '';
 
-    if ($username === $validUsername && $password === $validPassword) {
-        // Set session and redirect
-        $_SESSION['loggedin'] = true;
-        header("Location: admin.php");
-        exit();
-    } else {
-        $error = "Nom d'utilisateur ou mot de passe incorrect.";
+    
+    // Chemin vers la base de données SQLite
+    $db_path = "../data/data.sqlite";
+
+    try {
+        $pdo = new PDO("sqlite:$db_path");
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+        // Récupérer un utilisateur (par exemple, le premier utilisateur)
+        $query = "SELECT * FROM users WHERE email=:email and mdp=:mdp";
+        $stmt = $pdo->query($query);
+        $stmt->bindParam(':mdp', $password);
+        $stmt->bindParam(':email', $username);
+        $stmt->execute();
+        $userExists = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($userExists) {
+            // Set session and redirect
+            $_SESSION['loggedin'] = true;
+            $_SESSION['user'] = $username;
+            $_SESSION['pswrd'] = $password;
+            if ($userExists['role'] == 'A'){header("Location: admin.php");}
+            else if ($userExists['role'] == 'E'){header("Location: admin.php");}
+            else {header("Location: infoClient.php");}
+            exit();
+        } else {
+            throw new Exception("Nom d'utilisateur ou mot de passe incorrect.");
+        }
+    } catch (Exception $e) {
+        die("Erreur : " . $e->getMessage());
     }
+    
 }
 ?>
 
@@ -65,7 +87,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </form>
         <div class="barreB"></div>
 
-        <a href=""> <p>Mot de passe oublié ?</p> </a>
+        <a href="./inscription.php"> <p>Pas de compte ? S'inscrire -></p> </a>
     </main>
 </body>
 </html>

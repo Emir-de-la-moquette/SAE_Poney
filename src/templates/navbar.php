@@ -14,7 +14,7 @@
     </div>
     <ul class="nav-links">
         <li><a href="login.php">Se connecter</a></li>
-        <div class="dropdown">
+        <!-- <div class="dropdown">
             <button class="dropbtn">Image 3 barres</button>
             <div class="dropdown-content">
                 <a href="#" id="increase-text">Page 1</a>
@@ -22,7 +22,7 @@
                 <a href="#" id="high-contrast">Page 3</a>
                 <a href="#" id="reset-settings">Page 4</a>
             </div>
-        </div>
+        </div> -->
     </ul>
 </div>
 
