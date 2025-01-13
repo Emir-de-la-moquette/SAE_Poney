@@ -123,13 +123,13 @@ INSERT INTO OBTENIR_LVL(idPers, niveau, jma) VALUES
 (12, 1, '2023-01-01');
 
 INSERT INTO SEANCE(idSeance, encadrantSeance, intitule, duree, jma, heureDebut,idCours) VALUES
-(1, 1, 'Séance débutants', 1, '2024-11-20', 9,1),
-(2, 2, 'Séance avancés', 1, '2024-11-20', 10,2),
-(3, 3, 'Séance intermédiaires', 2, '2024-11-20', 12,3),
-(4, 4, 'Séance enfants', 1, '2024-11-21', 9,4),
-(5, 5, 'Séance adultes', 2, '2024-11-21', 14,5),
-(6, 6, 'Séance seniors', 1, '2024-11-22', 15,6),
-(7, 7, 'Séance compétitions', 2, '2024-11-23', 11,7);
+(1, 1, 'Séance débutants', 1, '2025-01-20', 9,1),
+(2, 2, 'Séance avancés', 1, '2025-01-20', 10,2),
+(3, 3, 'Séance intermédiaires', 2, '2025-01-20', 12,3),
+(4, 4, 'Séance enfants', 1, '2025-01-21', 9,4),
+(5, 5, 'Séance adultes', 2, '2025-01-21', 14,5),
+(6, 6, 'Séance seniors', 1, '2025-01-22', 15,6),
+(7, 7, 'Séance compétitions', 2, '2025-01-23', 11,7);
 
 INSERT INTO PONEY_RESERVE(idSeance, idPoney) VALUES
 (1, 1),
