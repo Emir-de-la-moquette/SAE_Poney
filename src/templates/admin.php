@@ -1,12 +1,5 @@
 <?php
     require_once "../static/script/modele.php";
-    try{
-        $connexion = new PDO($dsn, "chaloine", "chaloine");
-    }
-    catch(PDOException $e){
-        printf("Error connecting to database: %s", $e->getMessage());
-        exit();
-    }
 ?>
 <!DOCTYPE html>
 <html lang="fr">
