@@ -80,7 +80,7 @@ function insertPersonne($nom, $prenom, $tel, $mail, $taille, $poids,$mdp){
     $result = $connexion->query($sql);
     $row = $result->fetch();
     $id = $row['maxid'] + 1;
-    $hash=hash('sha256',$mdp)
+    $hash=hash('sha256',$mdp);
     $stmt = $connexion->prepare("INSERT INTO PERSONNE (idPers,nomPers,prenomPers,poids,taille,tel,mail,mdp) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
     $stmt->execute([$id, $nom, $prenom, $poids, $taille, $tel, $mail, $hash]);
     return $id;
@@ -93,7 +93,7 @@ function insertMoniteur($nom, $prenom, $tel, $mail, $taille, $poids, $nbHeureMax
     $stmt->execute([$id, $nbHeureMax]);
 }
 
-function insertAdherent($nom, $prenom, $tel, $mail, $taille, $poids, $dateInscription){
+function insertAdherent($nom, $prenom, $tel, $mail, $taille, $poids, $dateInscription,$mdp){
     global $connexion;
     $id = insertPersonne($nom, $prenom, $tel, $mail, $taille, $poids,$mdp);
     $stmt = $connexion->prepare("INSERT INTO CLIENT (idCli,dateInscription) VALUES (?, ?)");
@@ -135,7 +135,7 @@ function reserveCreneau($idCli,$idSceance){
 
 function assignerNiveau($idCli, $niveau, $dateObtention){
     global $connexion;
-    $stmt = $connexion->prepare("INSERT INTO AVOIR (idPers,niveau,jma) VALUES (?, ?, ?)");
+    $stmt = $connexion->prepare("INSERT INTO OBTENIR_LVL (idPers,niveau,jma) VALUES (?, ?, ?)");
     $stmt->execute([$idCli, $niveau, $dateObtention]);
 }
 
@@ -153,7 +153,7 @@ function assignerPoney($idPoney, $idSceance){
 
 function utilisateurExistant($mail,$mdp){
     global $connexion;
-    $hash=hash('sha256',$mdp)
+    $hash=hash('sha256',$mdp);
     $sql = "SELECT * FROM PERSONNE where mail=? and mdp=?";
     $stmt = $connexion->prepare($sql);
     $stmt->execute([$mail,$hash]);
@@ -163,5 +163,35 @@ function utilisateurExistant($mail,$mdp){
     }
     else{
         return -1;
+    }
+}
+
+function isMoniteur($mail, $mdp){
+    global $connexion;
+    $hash=hash('sha256',$mdp);
+    $sql = "SELECT * FROM PERSONNE NATURAL JOIN ENCADRANT where mail=? and mdp=? and idPers=idEnc";
+    $stmt = $connexion->prepare($sql);
+    $stmt->execute([$mail,$hash]);
+    $result = $stmt->fetch();
+    if($result){
+        return true;
+    }
+    else{
+        return false;
+    }
+}
+
+function isAdherent($mail, $mdp){
+    global $connexion;
+    $hash=hash('sha256',$mdp);
+    $sql = "SELECT * FROM PERSONNE NATURAL JOIN CLIENT where mail=? and mdp=? and idPers=idEnc";
+    $stmt = $connexion->prepare($sql);
+    $stmt->execute([$mail,$hash]);
+    $result = $stmt->fetch();
+    if($result){
+        return true;
+    }
+    else{
+        return false;
     }
 }
