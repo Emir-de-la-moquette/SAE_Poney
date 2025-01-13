@@ -55,11 +55,11 @@ INSERT INTO RACE(nomRace,description) VALUES
 ('Licorne','Cheval magique'),
 ('Alicorne','Cheval ailé magique'),
 ('Girafe','Cheval à long cou'),
-('Hippotame','Cheval amphibie');
+('Hippopotame','Cheval amphibie');
 
 INSERT INTO PONEY(idPoney,nomPoney,poidsMax,tailleMin,nomRace) VALUES
 (1,'Sophie',170,190,'Girafe'),
-(2,'Hyppoglouton',250,150,'Hippotame'),
+(2,'Hyppoglouton',250,150,'Hippopotame'),
 (3,'Bramble', 90, 110, 'Poney'),
 (4,'Cinnamon', 80, 115, 'Poney'),
 (5,'Rusty', 310, 120, 'Poney'),

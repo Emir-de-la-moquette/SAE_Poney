@@ -66,7 +66,7 @@
                     <?php
                     getPoneys();
                     ?>
-                    <button>Ajouter un poney +</button>
+                    <a href="ajoutPoney.php"><button>Ajouter un poney +</button></a>
                 </div>
             </section>
         </main>

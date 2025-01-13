@@ -165,3 +165,33 @@ function utilisateurExistant($mail,$mdp){
         return -1;
     }
 }
+
+function isMoniteur($mail, $mdp){
+    global $connexion;
+    $hash=hash('sha256',$mdp);
+    $sql = "SELECT * FROM PERSONNE NATURAL JOIN ENCADRANT where mail=? and mdp=? and idPers=idEnc";
+    $stmt = $connexion->prepare($sql);
+    $stmt->execute([$mail,$hash]);
+    $result = $stmt->fetch();
+    if($result){
+        return true;
+    }
+    else{
+        return false;
+    }
+}
+
+function isAdherent($mail, $mdp){
+    global $connexion;
+    $hash=hash('sha256',$mdp);
+    $sql = "SELECT * FROM PERSONNE NATURAL JOIN CLIENT where mail=? and mdp=? and idPers=idEnc";
+    $stmt = $connexion->prepare($sql);
+    $stmt->execute([$mail,$hash]);
+    $result = $stmt->fetch();
+    if($result){
+        return true;
+    }
+    else{
+        return false;
+    }
+}

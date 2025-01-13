@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Insertion de moniteur</title>
+    <title>Insertion de poney</title>
     <link rel="stylesheet" href="../static/styles/admin.css">
 </head>
 <body>
@@ -26,26 +26,25 @@
             </nav>
         </aside>
         <main>
-            <div class="titreAdmin">Veuillez entrez les informations du moniteur</div>
+            <div class="titreAdmin">Veuillez entrez les informations du poney</div>
             <section class="section">
                 <div class="table-container">
-                    <form action="ajoutMoniteur.php" method="post">
+                    <form action="ajoutPoney.php" method="post">
                         <label for="nom">Nom:</label>
                         <input type="text" id="nom" name="nom" required><br><br>
-                        <label for="prenom">Prénom:</label>
-                        <input type="text" id="prenom" name="prenom" required><br><br>
-                        <label for="tel">Téléphone:</label>
-                        <input type="text" id="tel" name="tel" required><br><br>
-                        <label for="mail">Mail:</label>
-                        <input type="text" id="mail" name="mail" required><br><br>
-                        <label for="poids">Poids:</label>
-                        <input type="text" id="poids" name="poids" required><br><br>
                         <label for="taille">Taille:</label>
                         <input type="text" id="taille" name="taille" required><br><br>
-                        <label for="heureMax"> Nombre d'heures maximum:</label>
-                        <input type="text" id="heureMax" name="heureMax" required><br><br>
-                        <label for="mdp">Mot de passe:</label>
-                        <input type="password" id="mdp" name="mdp" required><br><br>
+                        <label for="poids">Poids:</label>
+                        <input type="text" id="poids" name="poids" required><br><br>
+                        <label for="race">Race:</label>
+                        <select name="race">
+                            <option value="Poney">Poney</option>
+                            <option value="Licorne">Licorne</option>
+                            <option value="Alicorne">Alicorne</option>
+                            <option value="Pegase">Pégase</option>
+                            <option value="Girafe">Girafe</option>
+                            <option value="Hippopotame">Hippopotame</option>
+                        </select>
                         <input type="submit" value="Ajouter">
                     </form>
                 </div>
@@ -59,14 +58,12 @@
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Get submitted data
         $nom = $_POST['nom'] ?? '';
-        $prenom = $_POST['prenom'] ?? '';
-        $tel = $_POST['tel'] ?? '';
-        $mail = $_POST['mail'] ?? '';
-        $poids = $_POST['poids'] ?? '';
         $taille = $_POST['taille'] ?? '';
-        $heureMax = $_POST['heureMax'] ?? '';
-        $mdp = $_POST['mdp'] ?? '';
-        insertMoniteur($nom, $prenom, $tel, $mail, $taille, $poids, $heureMax, $mdp);
+        $poids = $_POST['poids'] ?? '';
+        $race = $_POST['race'] ?? '';
+        // Insert data into database
+        insertPoney($nom, $race, $poids, $taille);
         header("Location: admin.php");
         exit();
     }
+?>
