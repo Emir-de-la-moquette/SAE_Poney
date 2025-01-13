@@ -1,13 +1,13 @@
 <?php
-
 // Start session
 session_start();
+require "../static/script/modele.php"; // Inclure le modèle contenant la fonction `verifierUtilisateur`
 
 // Check if user is already logged in
-if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
-    header("Location: admin.php");
-    exit();
-}
+// if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
+//     header("Location: admin.php");
+//     exit();
+// }
 
 // Handle login errors
 $error = '';
@@ -16,39 +16,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Get submitted data
     $username = $_POST['username'] ?? '';
     $password = $_POST['password'] ?? '';
-
-    
-    // Chemin vers la base de données SQLite
-    $db_path = "../data/data.sqlite";
-
     try {
-        $pdo = new PDO("sqlite:$db_path");
-        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        // Vérification des identifiants via la fonction du modèle
+        $user = isUtilisateurExistant($username, $password);
 
-        // Récupérer un utilisateur (par exemple, le premier utilisateur)
-        $query = "SELECT * FROM users WHERE email=:email and mdp=:mdp";
-        $stmt = $pdo->query($query);
-        $stmt->bindParam(':mdp', $password);
-        $stmt->bindParam(':email', $username);
-        $stmt->execute();
-        $userExists = $stmt->fetch(PDO::FETCH_ASSOC);
-
-        if ($userExists) {
+        if ($user) {
             // Set session and redirect
             $_SESSION['loggedin'] = true;
             $_SESSION['user'] = $username;
             $_SESSION['pswrd'] = $password;
-            if ($userExists['role'] == 'A'){header("Location: admin.php");}
-            else if ($userExists['role'] == 'E'){header("Location: admin.php");}
-            else {header("Location: infoClient.php");}
+
+            if (isAdmin($username, $password)) {
+                echo "admin";
+                header("Location: admin.php");
+            } else if (isMoniteur($username, $password)) {
+                echo "moniteur";
+                header("Location: admin.php");
+            } else {
+                echo "client";
+                header("Location: infoClient.php");
+            }
             exit();
         } else {
-            throw new Exception("Nom d'utilisateur ou mot de passe incorrect.");
+            $error = "Nom d'utilisateur ou mot de passe incorrect.";
         }
     } catch (Exception $e) {
         die("Erreur : " . $e->getMessage());
     }
-    
 }
 ?>
 

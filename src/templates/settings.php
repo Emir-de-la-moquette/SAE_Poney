@@ -4,26 +4,20 @@
 
 session_start();
 
-if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === false) {
-    header("Location: admin.php");
-    exit();
-}
-
 // Chemin vers la base de données SQLite
 $db_path = "../data/data.sqlite";
 
+require_once "../static/script/modele.php"; // Inclure le fichier contenant les fonctions liées à MySQL
+
 // Se connecter à la base de données
 try {
+    // Vérifier si l'utilisateur est connecté
+    if (!isset($_SESSION['user']) || !isset($_SESSION['pswrd'])) {
+        throw new Exception("Utilisateur non connecté.");
+    }
 
-    $pdo = new PDO("sqlite:$db_path");
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-    // Récupérer un utilisateur (par exemple, le premier utilisateur)
-    $query = "SELECT * FROM users WHERE email=\"".$_SESSION["user"]."\" and mdp=\"".$_SESSION["pswrd"]."\"";
-    $stmt = $pdo->query($query);
-    $user = $stmt->fetch(PDO::FETCH_ASSOC);
-
-    // Vérification de l'utilisateur
+    // Récupérer les informations de l'utilisateur via la fonction du modèle
+    $user = getUtilisateur($_SESSION['user'], $_SESSION['pswrd']);
     if (!$user) {
         throw new Exception("Aucun utilisateur trouvé.");
     }
@@ -49,16 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (is_null($NEWmdp) or $NEWmdp == ""){
             try {
                 // Insérer les données dans la table "users"
-                $stmt = $pdo->prepare('UPDATE users SET name=:name, prenom=:prenom, telephone=:tel, poids=:poids, taille=:taille WHERE email=:email AND mdp=:mdp');
-                $stmt->bindParam(':name', $nom);
-                $stmt->bindParam(':prenom', $prenom);
-                $stmt->bindParam(':mdp', $mdp);
-                $stmt->bindParam(':email', $email);
-                $stmt->bindParam(':tel', $tele);
-                $stmt->bindParam(':poids', $poids);
-                $stmt->bindParam(':taille', $taille);
-                $stmt->execute();
-
+                updateUtilisateur($email,$mdp,$nom,$prenom,$tele,$taille,$poids);
 
                 echo "<p></p>";
                 echo '<script>   console.log(typeof showPopup); showPopup("données enregistrer avec succès !", true);   </script>';
@@ -81,17 +66,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             else{
                 try {
                     // Insérer les données dans la table "users"
-                    $stmt = $pdo->prepare('UPDATE users SET name=:name, prenom=:prenom, telephone=:tel, poids=:poids, taille=:taille, mdp=:NEWmdp WHERE email=:email AND mdp=:mdp');
-                    $stmt->bindParam(':name', $nom);
-                    $stmt->bindParam(':prenom', $prenom);
-                    $stmt->bindParam(':mdp', $mdp);
-                    $stmt->bindParam(':NEWmdp', $NEWmdp);
-                    $stmt->bindParam(':email', $email);
-                    $stmt->bindParam(':tel', $tele);
-                    $stmt->bindParam(':poids', $poids);
-                    $stmt->bindParam(':taille', $taille);
-                    $stmt->execute();
-    
+                    updateUtilisateur($email,$mdp,$nom,$prenom,$tele,$taille,$poids,$NEWmdp);
     
                     echo "<p></p>";
                     echo '<script>   console.log(typeof showPopup); showPopup("données enregistrer avec succès !", true);   </script>';
@@ -137,17 +112,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             <div class="form-group">
                 <label for="email">eMail *</label>
-                <input type="email" id="username" name="email" readonly="readonly" value="<?php echo htmlspecialchars($user['email']) ?? 'nullvalue'; ?>" required>
+                <input type="email" id="username" name="email" readonly="readonly" value="<?php echo htmlspecialchars($user['mail']) ?? 'nullvalue'; ?>" required>
             </div>
 
             <div class="form-group">
                 <label for="name">Nom</label>
-                <input type="text" id="name" name="name" value="<?php echo htmlspecialchars($user['name']) ?? 'nullvalue'; ?>" required>
+                <input type="text" id="name" name="name" value="<?php echo htmlspecialchars($user['nomPers']) ?? 'nullvalue'; ?>" required>
             </div>
 
             <div class="form-group">
                 <label for="prenom">Prenom</label>
-                <input type="text" id="prenom" name="prenom" value="<?php echo htmlspecialchars($user['prenom']) ?? 'nullvalue'; ?>" required>
+                <input type="text" id="prenom" name="prenom" value="<?php echo htmlspecialchars($user['prenomPers']) ?? 'nullvalue'; ?>" required>
             </div>
 
             <div class="form-group">
@@ -161,7 +136,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
             <div class="form-group">
                 <label for="telephone">Téléphone</label>
-                <input type="text" id="telephone" name="telephone" value="<?php echo htmlspecialchars($user['telephone']) ?? 'nullvalue'; ?>" required>
+                <input type="text" id="telephone" name="telephone" value="<?php echo htmlspecialchars($user['tel']) ?? 'nullvalue'; ?>" required>
             </div>
 
             <div class="form-group">
@@ -173,6 +148,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <label for="poids">Poids</label>
                 <input type="number" id="poids" name="poids" value="<?php echo htmlspecialchars($user['poids']) ?? 'nullvalue'; ?>" required>
             </div>
+            <?php if (isAdherent($userNAV["user"], $_SESSION['pswrd']) ){
+                echo '<div class="form-group">';
+                echo    '<label for="lvl">Niveau</label>';
+                echo    '<select id="lvl" name="lvl">';
+                echo        '<option value="1">debutant</option>';
+                echo        '<option value="2">intermediaire</option>';
+                echo        '<option value="3">experimenté</option>';
+                echo    '</select>';
+                echo '</div>';}
+            ?>
 
             <div class="form-group" id="btnform">
                 <button type="submit">Enregistrer</button>

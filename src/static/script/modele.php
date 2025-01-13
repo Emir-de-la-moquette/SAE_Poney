@@ -93,8 +93,9 @@ function insertMoniteur($nom, $prenom, $tel, $mail, $taille, $poids, $nbHeureMax
     $stmt->execute([$id, $nbHeureMax]);
 }
 
-function insertAdherent($nom, $prenom, $tel, $mail, $taille, $poids, $dateInscription,$mdp){
+function insertAdherent($nom, $prenom, $tel, $mail, $taille, $poids, $dateInscription, $mdp){
     global $connexion;
+    echo $nom.$prenom.$tel.$mail.$taille.$poids.$dateInscription;
     $id = insertPersonne($nom, $prenom, $tel, $mail, $taille, $poids,$mdp);
     $stmt = $connexion->prepare("INSERT INTO CLIENT (idCli,dateInscription) VALUES (?, ?)");
     $stmt->execute([$id, $dateInscription]);
@@ -135,7 +136,7 @@ function reserveCreneau($idCli,$idSceance){
 
 function assignerNiveau($idCli, $niveau, $dateObtention){
     global $connexion;
-    $stmt = $connexion->prepare("INSERT INTO OBTENIR_LVL (idPers,niveau,jma) VALUES (?, ?, ?)");
+    $stmt = $connexion->prepare("INSERT INTO AVOIR (idPers,niveau,jma) VALUES (?, ?, ?)");
     $stmt->execute([$idCli, $niveau, $dateObtention]);
 }
 
@@ -163,6 +164,22 @@ function utilisateurExistant($mail,$mdp){
     }
     else{
         return -1;
+    }
+}
+
+
+function isUtilisateurExistant($mail,$mdp){
+    global $connexion;
+    $hash=hash('sha256',$mdp);
+    $sql = "SELECT * FROM PERSONNE where mail=? and mdp=?";
+    $stmt = $connexion->prepare($sql);
+    $stmt->execute([$mail,$hash]);
+    $result = $stmt->fetch();
+    if($result){
+        return true;
+    }
+    else{
+        return false;
     }
 }
 
@@ -196,6 +213,7 @@ function isAdherent($mail, $mdp){
     }
 }
 
+
 function getCours($dateDebut,$dateFin){
     global $connexion;
     $sql = "SELECT * FROM SEANCE NATURAL JOIN COURS where jma>=? and jma=<?";
@@ -204,3 +222,55 @@ function getCours($dateDebut,$dateFin){
     $result = $stmt->fetch();
     var_dump($result);
 }
+
+function isAdmin($mail, $mdp){
+    global $connexion;
+    $hash=hash('sha256',$mdp);
+    $sql = "SELECT * FROM PERSONNE NATURAL JOIN ADMIN where mail=? and mdp=? and idPers=idAdm";
+    $stmt = $connexion->prepare($sql);
+    $stmt->execute([$mail,$hash]);
+    $result = $stmt->fetch();
+    if($result){
+        return true;
+    }
+    else{
+        return false;
+    }
+}
+
+function getUtilisateur($email, $mdp) {
+    global $connexion;
+    $stmt = $connexion->prepare("SELECT * FROM PERSONNE WHERE mail = :email AND mdp = :mdp");
+    $stmt->execute([
+        ':email' => $email,
+        ':mdp' => hash('sha256', $mdp)
+    ]);
+    return $stmt->fetch(PDO::FETCH_ASSOC);
+}
+
+function updateUtilisateur($email, $mdp, $nom, $prenom, $telephone, $taille, $poids, $NEWmdp = null) {
+    try {
+        global $connexion;
+        $query = "UPDATE personne SET nomPers = :name, prenomPers = :prenom, tel = :telephone, taille = :taille, poids = :poids";
+        if ($NEWmdp) {
+            $query .= ", mdp = :new_mdp";
+        }
+        $query .= " WHERE mail = :email AND mdp = :mdp";
+
+        $stmt = $connexion->prepare($query);
+        $stmt->bindParam(':name', $nom);
+        $stmt->bindParam(':prenom', $prenom);
+        $stmt->bindParam(':telephone', $telephone);
+        $stmt->bindParam(':taille', $taille);
+        $stmt->bindParam(':poids', $poids);
+        $stmt->bindParam(':email', $email);
+        $stmt->bindParam(':mdp', $mdp);
+        if ($NEWmdp) {
+            $stmt->bindParam(':new_mdp', hash('sha256', $NEWmdp));
+        }
+        $stmt->execute();
+    } catch (Exception $e) {
+        throw new Exception("Erreur lors de la mise à jour de l'utilisateur : " . $e->getMessage());
+    }
+}
+

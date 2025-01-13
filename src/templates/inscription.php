@@ -4,6 +4,16 @@
 // Fichier : register.php
 session_start();
 
+require "../static/script/modele.php";
+    $dsn = "mysql:dbname="."sae_mlp".";host="."127.0.0.1";
+    try{
+        $connexion = new PDO($dsn, "root", "clermont");
+    }
+    catch(PDOException $e){
+        printf("Error connecting to database: %s", $e->getMessage());
+        exit();
+    }
+
 // Chemin vers la base de données SQLite
 $db_path = "../data/data.sqlite";
 
@@ -14,38 +24,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $prenom = $_POST['prenom'] ?? null;
     $email = $_POST['email'] ?? null;
     $mdp = $_POST['password'] ?? null;
-    $taille = $_POST['taille'] ?? null;
-    $poids = $_POST['poids'] ?? null;
-    $tele = $_POST['telephone'] ?? null;
+    (int)$taille = $_POST['taille'] ?? 0;
+    (int)$poids = $_POST['poids'] ?? 0;
+    $tele = $_POST['telephone'] ?? "+33";
+    (int)$lvl = $_POST['lvl'] ?? "+33";
 
     // Validation de base
     if ($nom && $prenom && $email && $mdp) {
         try {
-            // Se connecter à la base de données
-            $pdo = new PDO("sqlite:$db_path");
-            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            // // Se connecter à la base de données
+            // $pdo = new PDO("sqlite:$db_path");
+            // $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-            // Vérifier si l'utilisateur existe déjà
-            $stmt = $pdo->prepare("SELECT COUNT(*) FROM users WHERE email = :email");
-            $stmt->bindParam(':email', $email);
-            $stmt->execute();
-            $userExists = $stmt->fetchColumn();
+            // // Vérifier si l'utilisateur existe déjà
+            // $stmt = $pdo->prepare("SELECT COUNT(*) FROM users WHERE email = :email");
+            // $stmt->bindParam(':email', $email);
+            // $stmt->execute();
+            // $userExists = $stmt->fetchColumn();
 
-            if ($userExists) {
+            if (isUtilisateurExistant($email, $mdp)) {
                 echo '<script>showPopup("Cet email est déjà utilisé.", false);</script>';
             } else {
                 // Insérer les données dans la table "users"
-                $stmt = $pdo->prepare('INSERT INTO users (name, prenom, email, mdp, taille, poids, telephone, role) 
-                                       VALUES (:name, :prenom, :email, :password, :taille, :poids, :telephone, :role)');
-                $stmt->bindParam(':name', $nom);
-                $stmt->bindParam(':prenom', $prenom);
-                $stmt->bindParam(':email', $email);
-                $stmt->bindParam(':password', $mdp);
-                $stmt->bindParam(':taille', $taille);
-                $stmt->bindParam(':poids', $poids);
-                $stmt->bindParam(':telephone', $tele);
-                $stmt->bindParam(':telephone', "C");
-                $stmt->execute();
+                // function insertAdherent($nom, $prenom, $tel, $mail, $taille, $poids, $dateInscription, $mdp){
+                insertAdherent($nom, $prenom, $tel, $email, $taille, $poids, date('Y-m-d H:i:s'), $mdp);
+
+                $id = utilisateurExistant($email, hash('sha256', $mdp));
+                assignerNiveau($id,$lvl,date('Y-m-d H:i:s'));
 
                 echo '<script>showPopup("Inscription réussie !", true);</script>';
                 header("Location: login.php");
@@ -101,12 +106,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             <div class="form-group">
                 <label for="taille">Taille (cm)</label>
-                <input type="number" id="taille" name="taille">
+                <input type="number" id="taille" name="taille" value=0>
             </div>
 
             <div class="form-group">
                 <label for="poids">Poids (kg)</label>
-                <input type="number" id="poids" name="poids">
+                <input type="number" id="poids" name="poids" value=0>
+            </div>
+
+            <div class="form-group">
+                <label for="lvl">Niveau</label>
+                <select id="lvl" name="lvl">
+                    <option value="1">debutant</option>
+                    <option value="2">intermediaire</option>
+                    <option value="3">experimenté</option>
+                </select>
             </div>
 
             <div class="form-group" id="btnform">
