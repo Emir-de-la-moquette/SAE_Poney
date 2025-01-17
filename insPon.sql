@@ -34,9 +34,6 @@ INSERT INTO ENCADRANT(idEnc,nbHeuresMax) VALUES
 (6,20),
 (7,15);
 
-INSERT INTO ADMIN(idAdm) VALUES
-(13);
-
 INSERT INTO CLIENT(idCli,dateInscription) VALUES
 (8,'2020-07-19'),
 (9,'2020-07-19'),

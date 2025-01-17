@@ -135,8 +135,9 @@ function creerSceance($encadrant, $heureDebut, $duree, $jma, $idCours, $intitule
 
 function reserveCreneau($idCli,$idSceance){
     global $connexion;
-    $stmt = $connexion->prepare("INSERT INTO RESERVER (idCli,idSeance) VALUES (?, ?)");
-    $stmt->execute([$idCli, $idSceance]);
+
+    $stmt = $connexion->prepare("INSERT INTO RESERVER (idSeance,idCli) VALUES (?, ?)");
+    $stmt->execute([$idSceance,$idCli]);
 }
 
 function assignerNiveau($idCli, $niveau, $dateObtention){
@@ -219,16 +220,6 @@ function isAdherent($mail, $mdp){
     else{
         return false;
     }
-}
-
-
-function getCours($dateDebut,$dateFin){
-    global $connexion;
-    $sql = "SELECT * FROM SEANCE NATURAL JOIN COURS where jma>=? and jma=<?";
-    $stmt = $connexion->prepare($sql);
-    $stmt->execute([$dateDebut,$dateFin]);
-    $result = $stmt->fetch();
-    var_dump($result);
 }
 
 function isAdmin($mail, $mdp){
@@ -356,6 +347,51 @@ function getProchainCours($idClient) {
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
+function getInfoSeance($id){
+    global $connexion;
+    $sql = "SELECT nbPersonneMax,nomCours,nomPers,prenomPers,intitule FROM COURS NATURAL JOIN SEANCE NATURAL JOIN PERSONNE where idSeance=?";
+    $stmt = $connexion->prepare($sql);
+    $stmt->execute([$id]);
+    $resBrut = $stmt->fetch();
+    return $resBrut;
+}
 
+function getParticipants($id){
+    global $connexion;
+    $sql = "SELECT DISTINCT nomPers,prenomPers FROM COURS NATURAL JOIN RESERVER INNER JOIN PERSONNE ON RESERVER.idCli=PERSONNE.idPers  where idSeance=?";
+    $stmt = $connexion->prepare($sql);
+    $stmt->execute([$id]);
+    $resBrut = $stmt->fetchAll();
+    $resPropre = [];
 
+    foreach ($resBrut as $rows) {
+        array_push($resPropre,['nom'=>$rows['nomPers'],'prenom'=>$rows['prenomPers']]);
+    }
+    return $resPropre;
+}
+
+function getCours($dateDebut,$dateFin){
+    global $connexion;
+    $sql = "SELECT idSeance,intitule,heureDebut,duree,jma FROM SEANCE WHERE jma > STR_TO_DATE(?,'%Y-%m-%d') AND jma < STR_TO_DATE(?,'%Y-%m-%d') ORDER BY jma";
+    $stmt = $connexion->prepare($sql);
+    $stmt->execute([$dateDebut,$dateFin]);
+    $resBrut = $stmt->fetchAll();
+    $resPropre = ['Lundi'=>[],
+                    'Mardi'=>[],
+                    'Mercredi'=>[],
+                    'Jeudi'=>[],
+                    'Vendredi'=>[],
+                    'Samedi'=>[],
+                    'Dimanche'=>[]];
+    
+
+    foreach ($resBrut as $rows) {
+        $jour = new DateTime($rows['jma']);
+        array_push($resPropre[array_keys($resPropre)[$jour->format('N')-1]],['id'=>$rows["idSeance"],
+                                                                             'debut'=>$rows["heureDebut"],
+                                                                             'fin'=>$rows["heureDebut"]+$rows["duree"],
+                                                                             'intitulé'=>$rows["intitule"]]);
+    }
+    return $resPropre;
+}
 
