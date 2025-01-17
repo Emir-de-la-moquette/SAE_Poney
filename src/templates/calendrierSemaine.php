@@ -7,6 +7,7 @@
 
 $date = new DateTime($_GET['date'] ?? "now");
 $premierJourSemaine = $date->format('d') - $date->format('N') + 1;
+$annee = $date->format('o');
 
 $mois = $date->format('m');
 $nbJourDansMoisDernier = $date->modify("last day of previous month")->format('t');
