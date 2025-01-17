@@ -77,32 +77,30 @@ function getPoneys(){
 
 function insertPersonne($nom, $prenom, $tel, $mail, $taille, $poids,$mdp){
     global $connexion;
-    //$sql = "SELECT max(idPers) as maxid FROM PERSONNE";
-    //$result = $connexion->query($sql);
+    $sql = "SELECT max(idPers) as maxid FROM PERSONNE";
+    $result = $connexion->query($sql);
     //var_dump($result) ;
-    //$row = $result->fetch();
-    //$id = $row['maxid'] + 1;
-    
-    //$q = $connexion->query("SELECT * FROM PERSONNE");
-    //$next = $q->fetch(PDO::FETCH_ASSOC);
-    //echo $next['idPers'];
+    $row = $result->fetch();
+    $id = $row['maxid'] + 1;
 
     $hash=hash('sha256',$mdp);
     $stmt = $connexion->prepare("INSERT INTO PERSONNE (nomPers,prenomPers,poids,taille,tel,mail,mdp) VALUES (?, ?, ?, ?, ?, ?, ?)");
     $stmt->execute([$nom, $prenom, $poids, $taille, $tel, $mail, $hash]);
-    //return $next['idPers'];
+
+    return $id;
 }
 
 function insertMoniteur($nom, $prenom, $tel, $mail, $taille, $poids, $nbHeureMax,$mdp){
     global $connexion;
     $id = insertPersonne($nom, $prenom, $tel, $mail, $taille, $poids,$mdp);
+    //echo "---->".$id;
     $stmt = $connexion->prepare("INSERT INTO ENCADRANT (idEnc,nbHeuresMax) VALUES (?, ?)");
     $stmt->execute([$id, $nbHeureMax]);
 }
 
 function insertAdherent($nom, $prenom, $tel, $mail, $taille, $poids, $dateInscription, $mdp){
     global $connexion;
-    echo $nom.$prenom.$tel.$mail.$taille.$poids.$dateInscription;
+    //echo $nom.$prenom.$tel.$mail.$taille.$poids.$dateInscription;
     $id = insertPersonne($nom, $prenom, $tel, $mail, $taille, $poids,$mdp);
     $stmt = $connexion->prepare("INSERT INTO CLIENT (idCli,dateInscription) VALUES (?, ?)");
     $stmt->execute([$id, $dateInscription]);
@@ -142,6 +140,9 @@ function reserveCreneau($idCli,$idSceance){
 }
 
 function assignerNiveau($idCli, $niveau, $dateObtention){
+    //echo"    ----->";var_dump($idCli);
+    //echo"    ----->";var_dump($niveau);
+    //echo"    ----->";var_dump($dateObtention);
     global $connexion;
     $stmt = $connexion->prepare("INSERT INTO obtenir_lvl (idPers,niveau,jma) VALUES (?, ?, ?)");
     $stmt->execute([$idCli, $niveau, $dateObtention]);

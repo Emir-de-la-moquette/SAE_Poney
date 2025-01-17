@@ -34,36 +34,37 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         try {
 
             if (isUtilisateurExistant($email, $mdp)) {
+                echo '<p></p>';
                 echo '<script>showPopup("Cet email est déjà utilisé.", false);</script>';
             } else {
                 // Insérer les données dans la table "users"
                 // function insertAdherent($nom, $prenom, $tel, $mail, $taille, $poids, $dateInscription, $mdp){
-                insertAdherent($nom, $prenom, $tel, $email, $taille, $poids, date('Y-m-d H:i:s'), $mdp);    //  CA MARCHE CORRECTEMENT MAIS PHP SORT UNE ERREUR QUE JE N'ARRIVE PAS A EMPECHER
-                
-                
 
+                insertAdherent($nom, $prenom, $tel, $email, $taille, $poids, date('Y-m-d H:i:s'), $mdp);
+                
+            
                 $id = utilisateurExistant($email, hash('sha256', $mdp));
-                assignerNiveau($id,$lvl,date('Y-m-d H:i:s'));
 
+                //sleep(3);
+                //header("Location: inscription.php");
                 echo '<p></p>';
                 echo '<script>showPopup("Inscription réussie !", true);</script>';
-                header("Location: login.php");
-                exit();
+                //header("Location: login.php");
+                //exit();
             }
         } catch (Exception $e) {
-            //echo 'Erreur : ' . $e->getMessage();
+            echo 'Erreur : ' . $e->getMessage();
 
-            try {$id = utilisateurExistant($email, hash('sha256', $mdp));
-            assignerNiveau($id,$lvl,date('Y-m-d H:i:s'));} catch (Exception $x) { echo "PTN FDP : ".$x;}
-
-            
-
-            //echo '<p></p>';
-            echo '<script>showPopup("Inscription réussie !", true);</script>';
-            //header("Location: login.php"); // JE FAIS LA REDIRECTION DANS LE CATCH CAR PHP EST DEBILE EST ME SORT UNE ERREUR ALORS QU'IL Y EN A PAS
+            //header("Location: inscription.php");
+            echo '<p></p>';
+            echo '<script>showPopup("Cela na pas fonctionné, cest de la faut de tristan", false);</script>';
+            //header("Location: login.php"); 
             exit();
         }
     } else {
+
+        //header("Location: inscription.php");
+        echo '<p></p>';
         echo '<script>showPopup("Veuillez remplir tous les champs obligatoires.", false);</script>';
     }
 }
@@ -79,6 +80,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <title>Inscription</title>
 </head>
 <body>
+
+    <a href="login.php" style="position: absolute; top: 10px; left: 10px;">
+        <img src="../static/images/maison noire.png" alt="Retour à l'accueil" style="width: 40px; height: 40px; cursor: pointer;">
+    </a>
+
     <main class="login-container">
         <form id="registerForm" method="POST">
             <h1>Inscription</h1>
