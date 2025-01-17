@@ -1,3 +1,5 @@
+<script src="../static/script/popup_valid.js"></script>
+
 <?php
 
 session_start();
@@ -127,7 +129,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             <?php if (isAdherent($user['mail'], $_SESSION['pswrd'])): ?>
                 <div class="form-group">
-                    <label for="lvl">Niveau</label>
+                    <label for="lvl">Nouveau niveau atteint ?</label>
                     <select id="lvl" name="lvl">
                         <option value="1" <?php echo getLvl($user['idPers']) == 1 ? 'selected' : ''; ?>>Débutant</option>
                         <option value="2" <?php echo getLvl($user['idPers']) == 2 ? 'selected' : ''; ?>>Intermédiaire</option>
