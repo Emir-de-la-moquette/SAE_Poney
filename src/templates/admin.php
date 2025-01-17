@@ -34,7 +34,7 @@
                     <?php
                     getAdherent();
                     ?>
-                    <button>Ajouter un adhérent +</button>
+                    <a href="inscription.php"><button>Ajouter un adhérent +</button></a>
                 </div>
             </section>
 

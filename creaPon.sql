@@ -17,9 +17,9 @@ CREATE OR REPLACE TABLE ENCADRANT (
     FOREIGN KEY (idEnc) REFERENCES PERSONNE(idPers) ON DELETE CASCADE
 );
 
-CREATE OR REPLACE TABLE ADMIN (
+CREATE OR REPLACE TABLE ADMINISTRATEUR (
     idAdm SERIAL PRIMARY KEY,
-    FOREIGN KEY (idAdm) REFERENCES personne(idPers) ON DELETE CASCADE
+    FOREIGN KEY (idAdm) REFERENCES PERSONNE(idPers) ON DELETE CASCADE
 );
 
 CREATE OR REPLACE TABLE CLIENT (
@@ -121,14 +121,20 @@ CREATE OR REPLACE TRIGGER limite_10_inscriptions
 BEFORE INSERT ON RESERVER FOR EACH ROW
 BEGIN
     DECLARE nbInscriptions INT;
+    DECLARE nbPersonneMax INT;
 
     SELECT COUNT(*) INTO nbInscriptions
         FROM RESERVER
         WHERE idSeance = NEW.idSeance;
 
-    IF nbInscriptions >= 10 THEN
+    SELECT nbPersonneMax INTO nbPersonneMax
+        FROM SEANCE s
+        JOIN COURS c ON c.idCours = s.idCours
+        WHERE s.idSeance = NEW.idSeance;
+
+    IF nbInscriptions >= nbPersonneMax THEN
         SIGNAL SQLSTATE '45000'
-        SET message_text = 'Le nombre maximum de 10 inscriptions est atteint pour cette seance';
+        SET message_text = 'Le nombre maximum d inscriptions est atteint pour cette seance';
     END IF;
 END mlp
 

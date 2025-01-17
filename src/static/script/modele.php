@@ -23,6 +23,7 @@ function getMoniteur(){
             echo "<tr>";
             echo "<td>".$row['nomPers']."</td>";
             echo "<td>".$row['prenomPers']."</td>";
+            echo "<td><a href='modifierUser.php?id=".$row['idPers']."'>Modifier</a></td>";
             echo "</tr>";
         }
         echo "</table>";
@@ -47,6 +48,7 @@ function getAdherent(){
             echo "<td>".$row['mail']."</td>";
             echo "<td>".$row['taille']."</td>";
             echo "<td>".$row['poids']."</td>";
+            echo "<td><a href='modifierUser.php?id=".$row['idPers']."'>Modifier</a></td>";
             echo "</tr>";
         }
         echo "</table>";
@@ -69,6 +71,8 @@ function getPoneys(){
             echo "<td>".$row['nomPoney']."</td>";
             echo "<td>".$row['poidsMax']."</td>";
             echo "<td>".$row['tailleMin']."</td>";
+            echo "<td><a href='modifierPoney.php?id=".$row['nomPoney']."'>Modifier</a></td>";
+            
             echo "</tr>";
         }
         echo "</table>";
@@ -214,6 +218,19 @@ function isAdherent($mail, $mdp){
     }
 }
 
+function isAdherentMail($mail){
+    global $connexion;
+    $sql = "SELECT * FROM PERSONNE NATURAL JOIN CLIENT where mail=? and idPers=idCli";
+    $stmt = $connexion->prepare($sql);
+    $stmt->execute([$mail]);
+    $result = $stmt->fetch();
+    if($result){
+        return true;
+    }
+    else{
+        return false;
+    }
+}
 
 function getCours($dateDebut,$dateFin){
     global $connexion;
@@ -227,7 +244,7 @@ function getCours($dateDebut,$dateFin){
 function isAdmin($mail, $mdp){
     global $connexion;
     $hash=hash('sha256',$mdp);
-    $sql = "SELECT * FROM PERSONNE NATURAL JOIN ADMIN where mail=? and mdp=? and idPers=idAdm";
+    $sql = "SELECT * FROM PERSONNE NATURAL JOIN ADMINISTRATEUR where mail=? and mdp=? and idPers=idAdm";
     $stmt = $connexion->prepare($sql);
     $stmt->execute([$mail,$hash]);
     $result = $stmt->fetch();
@@ -252,7 +269,7 @@ function getUtilisateur($email, $mdp) {
 function updateUtilisateur($email, $mdp, $nom, $prenom, $telephone, $taille, $poids, $NEWmdp = null) {
     try {
         global $connexion;
-        $query = "UPDATE personne SET nomPers = :name, prenomPers = :prenom, tel = :telephone, taille = :taille, poids = :poids";
+        $query = "UPDATE PERSONNE SET nomPers = :name, prenomPers = :prenom, tel = :telephone, taille = :taille, poids = :poids";
         if ($NEWmdp) {
             $query .= ", mdp = :new_mdp";
         }
@@ -282,4 +299,28 @@ function getLvl($mail){
     $stmt->execute($mail);
     $result = $stmt->fetch();
     return $result;
+}
+
+function getUserByID($id){
+    global $connexion;
+    $sql = "SELECT * FROM PERSONNE where idPers=?";
+    $stmt = $connexion->prepare($sql);
+    $stmt->execute([$id]);
+    $result = $stmt->fetch();
+    return $result;
+}
+
+function getPoneyByNom($nom){
+    global $connexion;
+    $sql = "SELECT * FROM PONEY where nomPoney=?";
+    $stmt = $connexion->prepare($sql);
+    $stmt->execute([$nom]);
+    $result = $stmt->fetch();
+    return $result;
+}
+
+function updatePoney($nomPoney, $tailleMin, $PoidsMax){
+    global $connexion;
+    $stmt = $connexion->prepare("UPDATE PONEY SET poidsMax = ?, tailleMin = ? WHERE nomPoney = ?");
+    $stmt->execute([$PoidsMax, $tailleMin, $nomPoney]);
 }
