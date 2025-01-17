@@ -24,6 +24,7 @@ function getMoniteur(){
             echo "<td>".$row['nomPers']."</td>";
             echo "<td>".$row['prenomPers']."</td>";
             echo "<td><a href='modifierUser.php?id=".$row['idPers']."'>Modifier</a></td>";
+            echo "<td><a href='supprimerUser.php?id=".$row['idPers']."'>Supprimer</a></td>";
             echo "</tr>";
         }
         echo "</table>";
@@ -48,6 +49,7 @@ function getAdherent(){
             echo "<td>".$row['mail']."</td>";
             echo "<td>".$row['taille']."</td>";
             echo "<td>".$row['poids']."</td>";
+            echo "<td><a href='supprimerUser.php?id=".$row['idPers']."'>Supprimer</a></td>";
             echo "<td><a href='modifierUser.php?id=".$row['idPers']."'>Modifier</a></td>";
             echo "</tr>";
         }
@@ -72,6 +74,7 @@ function getPoneys(){
             echo "<td>".$row['poidsMax']."</td>";
             echo "<td>".$row['tailleMin']."</td>";
             echo "<td><a href='modifierPoney.php?id=".$row['nomPoney']."'>Modifier</a></td>";
+            echo "<td><a href='supprimerPoney.php?id=".$row['nomPoney']."'>Supprimer</a></td>";
             
             echo "</tr>";
         }
@@ -323,4 +326,16 @@ function updatePoney($nomPoney, $tailleMin, $PoidsMax){
     global $connexion;
     $stmt = $connexion->prepare("UPDATE PONEY SET poidsMax = ?, tailleMin = ? WHERE nomPoney = ?");
     $stmt->execute([$PoidsMax, $tailleMin, $nomPoney]);
+}
+
+function deletePoney($nomPoney){
+    global $connexion;
+    $stmt = $connexion->prepare("DELETE FROM PONEY WHERE nomPoney = ?");
+    $stmt->execute([$nomPoney]);
+}
+
+function deletePersonne($id){
+    global $connexion;
+    $stmt = $connexion->prepare("DELETE FROM PERSONNE WHERE idPers = ?");
+    $stmt->execute([$id]);
 }

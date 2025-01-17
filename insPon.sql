@@ -149,7 +149,8 @@ INSERT INTO PONEY_RESERVE(idSeance, idPoney) VALUES
 (1, 19);
 
 INSERT INTO RESERVER(idSeance, idCli) VALUES
-(1, 8), 
+(1, 8),
+(1,12), 
 (2, 9), 
 (3, 10),
 (4, 11),
