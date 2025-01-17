@@ -4,15 +4,8 @@
 // Fichier : register.php
 session_start();
 
-require "../static/script/modele.php";
-    $dsn = "mysql:dbname="."sae_mlp".";host="."127.0.0.1";
-    try{
-        $connexion = new PDO($dsn, "root", "clermont");
-    }
-    catch(PDOException $e){
-        printf("Error connecting to database: %s", $e->getMessage());
-        exit();
-    }
+require_once "../static/script/modele.php";
+
 
 // Chemin vers la base de données SQLite
 $db_path = "../data/data.sqlite";
@@ -26,40 +19,45 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $mdp = $_POST['password'] ?? null;
     (int)$taille = $_POST['taille'] ?? 0;
     (int)$poids = $_POST['poids'] ?? 0;
-    $tele = $_POST['telephone'] ?? "+33";
+    $tel = $_POST['telephone'] ?? "+33";
     (int)$lvl = $_POST['lvl'] ?? "+33";
 
     // Validation de base
     if ($nom && $prenom && $email && $mdp) {
         try {
-            // // Se connecter à la base de données
-            // $pdo = new PDO("sqlite:$db_path");
-            // $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-            // // Vérifier si l'utilisateur existe déjà
-            // $stmt = $pdo->prepare("SELECT COUNT(*) FROM users WHERE email = :email");
-            // $stmt->bindParam(':email', $email);
-            // $stmt->execute();
-            // $userExists = $stmt->fetchColumn();
 
             if (isUtilisateurExistant($email, $mdp)) {
+                echo '<p></p>';
                 echo '<script>showPopup("Cet email est déjà utilisé.", false);</script>';
             } else {
                 // Insérer les données dans la table "users"
                 // function insertAdherent($nom, $prenom, $tel, $mail, $taille, $poids, $dateInscription, $mdp){
+
                 insertAdherent($nom, $prenom, $tel, $email, $taille, $poids, date('Y-m-d H:i:s'), $mdp);
-
+                
+            
                 $id = utilisateurExistant($email, hash('sha256', $mdp));
-                assignerNiveau($id,$lvl,date('Y-m-d H:i:s'));
 
+                //sleep(3);
+                //header("Location: inscription.php");
+                echo '<p></p>';
                 echo '<script>showPopup("Inscription réussie !", true);</script>';
-                header("Location: login.php");
-                exit();
+                //header("Location: login.php");
+                //exit();
             }
         } catch (Exception $e) {
             echo 'Erreur : ' . $e->getMessage();
+
+            //header("Location: inscription.php");
+            echo '<p></p>';
+            echo '<script>showPopup("Cela na pas fonctionné, cest de la faut de tristan", false);</script>';
+            //header("Location: login.php"); 
+            exit();
         }
     } else {
+
+        //header("Location: inscription.php");
+        echo '<p></p>';
         echo '<script>showPopup("Veuillez remplir tous les champs obligatoires.", false);</script>';
     }
 }
@@ -75,6 +73,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <title>Inscription</title>
 </head>
 <body>
+
+    <a href="login.php" style="position: absolute; top: 10px; left: 10px;">
+        <img src="../static/images/maison noire.png" alt="Retour à l'accueil" style="width: 40px; height: 40px; cursor: pointer;">
+    </a>
+
     <main class="login-container">
         <form id="registerForm" method="POST">
             <h1>Inscription</h1>
