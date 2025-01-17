@@ -13,6 +13,7 @@ try {
     if (!$userNAV) {
         throw new Exception("Aucun utilisateur trouvé.");
     }
+    //var_dump($userNAV);
 } catch (Exception $e) {
     die("Erreur : " . $e->getMessage());
 }
@@ -28,24 +29,24 @@ try {
 
 <div class="admin-info">
     <?php 
-    if (isAdmin($userNAV["user"], $_SESSION['pswrd'])) {
+    if (isAdmin($userNAV["mail"], $_SESSION['pswrd'])) {
         echo "<h2>ADMIN</h2>";
-    } elseif (isMoniteur($userNAV["user"], $_SESSION['pswrd'])) {
+    } elseif (isMoniteur($userNAV["mail"], $_SESSION['pswrd'])) {
         echo "<h2>ENCADRANT</h2>";
     } else {
         echo "<h2>CLIENT</h2>";
     }
     ?>
-    <p><?php echo htmlspecialchars($userNAV['name']) . " " . htmlspecialchars($userNAV['prenom']); ?></p>
+    <p><?php echo htmlspecialchars($userNAV['nomPers']) . " " . htmlspecialchars($userNAV['prenomPers']); ?></p>
 </div>
 
 <nav>
     <ul>
         <?php 
-        if (isAdmin($userNAV["user"], $_SESSION['pswrd'])) {
+        if (isAdmin($userNAV["mail"], $_SESSION['pswrd'])) {
             echo "<a href='./admin.php'><li>Gestionnaire</li></a>";
             echo "<a href='./planning.php'><li>Plannings</li></a>";
-        } elseif (isMoniteur($userNAV["user"], $_SESSION['pswrd'])) {
+        } elseif (isMoniteur($userNAV["mail"], $_SESSION['pswrd'])) {
             echo "<a href='./admin.php'><li>Informations</li></a>";
             echo "<a href='./planning.php'><li>Plannings</li></a>";
         } else {

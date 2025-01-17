@@ -4,15 +4,8 @@
 // Fichier : register.php
 session_start();
 
-require "../static/script/modele.php";
-    $dsn = "mysql:dbname="."sae_mlp".";host="."127.0.0.1";
-    try{
-        $connexion = new PDO($dsn, "root", "clermont");
-    }
-    catch(PDOException $e){
-        printf("Error connecting to database: %s", $e->getMessage());
-        exit();
-    }
+require_once "../static/script/modele.php";
+
 
 // Chemin vers la base de données SQLite
 $db_path = "../data/data.sqlite";
