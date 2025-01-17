@@ -12,8 +12,27 @@
     </aside>
     <main>
         <div class="content">
-            <h1>Page en cours de développement</h1>
-            <p>Nous sommes en train de travailler sur cette section. Merci de votre patience !</p>
+            <h1> Cours : <?php ?></h1>
+            <h2> Séance de <?php ?></h2>
+            <div>
+                <h3> Encadrant : <?php ?></h3>
+                <div>
+                <h3> Participant :</h3>
+                    <ul>
+                        <?php
+                        $lesPersonnes = [['mail'=>'','nom'=>'Richard','prenom'=>'Baptiste']];
+                        foreach ($lesPersonnes as $personne) {
+                            echo "<li>".$personne['nom']." ".$personne['prenom']."</li>";
+                        }
+                        ?>
+                    </ul>
+                    <?php if(count($lesPersonnes)==10){echo "<p>Le cours est complé</p>";}?>
+                </div>
+            </div>
+            <?php if(count($lesPersonnes)<10 && !in_array($lesPersonnes,$_SESSION['user'])){
+                echo "<a href='/src/templates/reservation.php?id=%s'>Réserver</a>";
+            }
+            ?>
         </div>
     </main>
 </body>
