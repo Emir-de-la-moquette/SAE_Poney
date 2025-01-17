@@ -49,8 +49,8 @@ function getAdherent(){
             echo "<td>".$row['mail']."</td>";
             echo "<td>".$row['taille']."</td>";
             echo "<td>".$row['poids']."</td>";
-            echo "<td><a href='supprimerUser.php?id=".$row['idPers']."'>Supprimer</a></td>";
             echo "<td><a href='modifierUser.php?id=".$row['idPers']."'>Modifier</a></td>";
+            echo "<td><a href='supprimerUser.php?id=".$row['idPers']."'>Supprimer</a></td>";
             echo "</tr>";
         }
         echo "</table>";
