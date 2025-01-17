@@ -9,4 +9,5 @@ drop table if exists RACE;
 drop table if exists COTISATION_CLIENT;
 drop table if exists CLIENT;
 drop table if exists ENCADRANT;
+drop table if exists ADMIN;
 drop table if exists PERSONNE;
