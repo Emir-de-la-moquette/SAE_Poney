@@ -55,6 +55,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <title>Connexion</title>
 </head>
 <body>
+    <a href="home.php" style="position: absolute; top: 10px; left: 10px;">
+        <img src="../static/images/maison noire.png" alt="Retour à l'accueil" style="width: 40px; height: 40px; cursor: pointer;">
+    </a>
+
     <main class="login-container">
         <form id="loginForm" method="POST">
             <h1>Connexion</h1>

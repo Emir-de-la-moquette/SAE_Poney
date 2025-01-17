@@ -36,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (is_null($mdp_nouveau) || $mdp_nouveau === "") {
             try {
                 updateUtilisateur($email, $mdp_actuel, $nom, $prenom, $telephone, $taille, $poids, null);
-                if ($niveau != getLvl($email)){assignerNiveau(utilisateurExistant($email, $mdp_actuel), $niveau, date('Y-m-d H:i:s'));}
+                if (isAdherent($user['mail'], $_SESSION['pswrd'])) {if ($niveau != getLvl($email)){assignerNiveau(utilisateurExistant($email, $mdp_actuel), $niveau, date('Y-m-d H:i:s'));}}
                 
                 echo '<p></p>';
                 echo '<script>showPopup("Données enregistrées avec succès !", true);</script>';
@@ -51,7 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             } else {
                 try {
                     updateUtilisateur($email, $mdp_actuel, $nom, $prenom, $telephone, $taille, $poids, $mdp_nouveau);
-                    if ($niveau != getLvl($email)){assignerNiveau(utilisateurExistant($email, $mdp_actuel), $niveau, date('Y-m-d H:i:s'));}
+                    if (isAdherent($user['mail'], $_SESSION['pswrd'])) {if ($niveau != getLvl($email)){assignerNiveau(utilisateurExistant($email, $mdp_actuel), $niveau, date('Y-m-d H:i:s'));}}
                     $_SESSION['pswrd'] = $mdp_nouveau;
                     echo '<p></p>';
                     echo '<script>showPopup("Données enregistrées avec succès !", true);</script>';

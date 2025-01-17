@@ -263,11 +263,12 @@ function updateUtilisateur($email, $mdp, $nom, $prenom, $telephone, $taille, $po
         $stmt->bindParam(':taille', $taille);
         $stmt->bindParam(':poids', $poids);
         $stmt->bindParam(':email', $email);
-        $stmt->bindParam(':mdp', $mdp);
+        $stmt->bindParam(':mdp', hash('sha256', $mdp));
         if ($NEWmdp) {
             $stmt->bindParam(':new_mdp', hash('sha256', $NEWmdp));
         }
         $stmt->execute();
+        $stmt->fetch();
     } catch (Exception $e) {
         throw new Exception("Erreur lors de la mise à jour de l'utilisateur : " . $e->getMessage());
     }

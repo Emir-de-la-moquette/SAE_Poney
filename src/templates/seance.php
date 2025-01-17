@@ -2,6 +2,20 @@
     $info = getInfoSeance($_GET['id']);
     $participants = getParticipants($_GET['id']);
     session_start();
+
+    try {
+        if (!isset($_SESSION['user']) || !isset($_SESSION['pswrd'])) {
+            throw new Exception("Utilisateur non connecté.");
+        }
+    
+        $user = getUtilisateur($_SESSION['user'], $_SESSION['pswrd']);
+        if (!$user) {
+            throw new Exception("Aucun utilisateur trouvé.");
+        }
+    } catch (Exception $e) {
+        header("Location: home.php");
+    }
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -34,7 +48,7 @@
                     <?php if(count($participants)==10){echo "<p>Le cours est complé</p>";}?>
                 </div>
             </div>
-            <?php if(count($participants)<=10){
+            <?php if(count($participants)<=10 && isAdherent($user['mail'], $_SESSION['pswrd'])){
                 printf("<a href='/src/templates/reservation.php?id=%s'>Réserver</a>",$_GET['id']);
             }
             ?>
