@@ -1,7 +1,7 @@
 <?php
-$dsn = "mysql:dbname="."DBchaloine".";host="."servinfo-maria";
+$dsn = "mysql:dbname="."sae_mlp".";host="."127.0.0.1";
 try{
-    $connexion = new PDO($dsn, "chaloine", "chaloine");
+    $connexion = new PDO($dsn, "root", "clermont");
 }
 catch(PDOException $e){
     printf("Error connecting to database: %s", $e->getMessage());
@@ -79,24 +79,28 @@ function insertPersonne($nom, $prenom, $tel, $mail, $taille, $poids,$mdp){
     global $connexion;
     $sql = "SELECT max(idPers) as maxid FROM PERSONNE";
     $result = $connexion->query($sql);
+    //var_dump($result) ;
     $row = $result->fetch();
     $id = $row['maxid'] + 1;
+
     $hash=hash('sha256',$mdp);
-    $stmt = $connexion->prepare("INSERT INTO PERSONNE (idPers,nomPers,prenomPers,poids,taille,tel,mail,mdp) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
-    $stmt->execute([$id, $nom, $prenom, $poids, $taille, $tel, $mail, $hash]);
+    $stmt = $connexion->prepare("INSERT INTO PERSONNE (nomPers,prenomPers,poids,taille,tel,mail,mdp) VALUES (?, ?, ?, ?, ?, ?, ?)");
+    $stmt->execute([$nom, $prenom, $poids, $taille, $tel, $mail, $hash]);
+
     return $id;
 }
 
 function insertMoniteur($nom, $prenom, $tel, $mail, $taille, $poids, $nbHeureMax,$mdp){
     global $connexion;
     $id = insertPersonne($nom, $prenom, $tel, $mail, $taille, $poids,$mdp);
+    //echo "---->".$id;
     $stmt = $connexion->prepare("INSERT INTO ENCADRANT (idEnc,nbHeuresMax) VALUES (?, ?)");
     $stmt->execute([$id, $nbHeureMax]);
 }
 
 function insertAdherent($nom, $prenom, $tel, $mail, $taille, $poids, $dateInscription, $mdp){
     global $connexion;
-    echo $nom.$prenom.$tel.$mail.$taille.$poids.$dateInscription;
+    //echo $nom.$prenom.$tel.$mail.$taille.$poids.$dateInscription;
     $id = insertPersonne($nom, $prenom, $tel, $mail, $taille, $poids,$mdp);
     $stmt = $connexion->prepare("INSERT INTO CLIENT (idCli,dateInscription) VALUES (?, ?)");
     $stmt->execute([$id, $dateInscription]);
@@ -136,6 +140,9 @@ function reserveCreneau($idCli,$idSceance){
 }
 
 function assignerNiveau($idCli, $niveau, $dateObtention){
+    //echo"    ----->";var_dump($idCli);
+    //echo"    ----->";var_dump($niveau);
+    //echo"    ----->";var_dump($dateObtention);
     global $connexion;
     $stmt = $connexion->prepare("INSERT INTO obtenir_lvl (idPers,niveau,jma) VALUES (?, ?, ?)");
     $stmt->execute([$idCli, $niveau, $dateObtention]);
@@ -279,7 +286,76 @@ function getLvl($mail){
     global $connexion;
     $sql = "SELECT max(niveau) FROM OBTENIR_LVL NATURAL JOIN PERSONNE where mail=?";
     $stmt = $connexion->prepare($sql);
-    $stmt->execute($mail);
+    $stmt->execute([$mail]);
     $result = $stmt->fetch();
-    return $result;
+    return $result[0];
 }
+
+function getEtatAbonnement($idCli) {
+    global $connexion;
+    $annee = date("Y");
+    $sql = "SELECT COUNT(*) as count FROM COTISATION_CLIENT WHERE idCli = ? AND anneeCotisation = ?";
+    $stmt = $connexion->prepare($sql);
+    $stmt->execute([$idCli, $annee]);
+    $result = $stmt->fetch();
+
+    return ['payé' => $result['count'] > 0];
+}
+
+function enregistrerCotisation($idCli) {
+    global $connexion;
+    $annee = date("Y");
+    $montant = 100;
+
+    //echo $idCli.$annee;
+
+    try {
+        // cotisation existe déjà
+        $sqlCheck = "SELECT COUNT(*) as count FROM COTISATION_CLIENT WHERE idCli = ? AND anneeCotisation = ?";
+        $stmtCheck = $connexion->prepare($sqlCheck);
+        $stmtCheck->execute([$idCli, $annee]);
+        $resultCheck = $stmtCheck->fetch();
+
+        if ($resultCheck['count'] > 0) {
+            return "La cotisation pour l'année $annee est déjà enregistrée.";
+        }
+
+        // Ajout cotisation
+        $sqlInsert = "INSERT INTO COTISATION_CLIENT (idCli, anneeCotisation, prix) VALUES (?, ?, ?)";
+        $stmtInsert = $connexion->prepare($sqlInsert);
+        $stmtInsert->execute([$idCli, $annee, $montant]);
+
+        return "Cotisation de $montant € enregistrée avec succès pour l'utilisateur $idCli pour l'année $annee.";
+    } catch (PDOException $e) {
+        return "Erreur lors de l'enregistrement de la cotisation : " . $e->getMessage();
+    }
+}
+
+// function getReserve($idClient){
+//     global $connexion;
+//     $sql = "SELECT * FROM RESERVER NATURAL JOIN SEANCE NATURAL JOIN COURS NATURAL JOIN ENCADRANT WHERE idCli = ? AND jma >= CURDATE()";
+//     $stmt = $connexion->prepare($sql);
+//     $stmt->execute([$idClient]);
+//     return $stmt->fetchAll(PDO::FETCH_ASSOC);
+// }
+
+function getProchainCours($idClient) {
+    global $connexion;
+    $sql = "SELECT s.intitule, s.jma AS date, s.heureDebut, c.niveau, p.nomPers AS moniteur
+            FROM SEANCE s
+            JOIN COURS c ON s.idCours = c.idCours
+            JOIN ENCADRANT e ON s.encadrantSeance = e.idEnc
+            JOIN PERSONNE p ON e.idEnc = p.idPers
+            JOIN RESERVER r ON s.idSeance = r.idSeance
+            WHERE r.idCli = ?
+            AND s.jma >= CURDATE()
+            ORDER BY s.jma, s.heureDebut";
+    
+    $stmt = $connexion->prepare($sql);
+    $stmt->execute([$idClient]);
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+
+
+
