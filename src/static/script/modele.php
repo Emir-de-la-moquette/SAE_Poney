@@ -1,7 +1,7 @@
 <?php
-$dsn = "mysql:dbname="."DBchaloine".";host="."servinfo-maria";
+$dsn = "mysql:dbname="."sae_mlp".";host="."127.0.0.1";
 try{
-    $connexion = new PDO($dsn, "chaloine", "chaloine");
+    $connexion = new PDO($dsn, "root", "clermont");
 }
 catch(PDOException $e){
     printf("Error connecting to database: %s", $e->getMessage());
@@ -77,14 +77,20 @@ function getPoneys(){
 
 function insertPersonne($nom, $prenom, $tel, $mail, $taille, $poids,$mdp){
     global $connexion;
-    $sql = "SELECT max(idPers) as maxid FROM PERSONNE";
-    $result = $connexion->query($sql);
-    $row = $result->fetch();
-    $id = $row['maxid'] + 1;
+    //$sql = "SELECT max(idPers) as maxid FROM PERSONNE";
+    //$result = $connexion->query($sql);
+    //var_dump($result) ;
+    //$row = $result->fetch();
+    //$id = $row['maxid'] + 1;
+    
+    //$q = $connexion->query("SELECT * FROM PERSONNE");
+    //$next = $q->fetch(PDO::FETCH_ASSOC);
+    //echo $next['idPers'];
+
     $hash=hash('sha256',$mdp);
-    $stmt = $connexion->prepare("INSERT INTO PERSONNE (idPers,nomPers,prenomPers,poids,taille,tel,mail,mdp) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
-    $stmt->execute([$id, $nom, $prenom, $poids, $taille, $tel, $mail, $hash]);
-    return $id;
+    $stmt = $connexion->prepare("INSERT INTO PERSONNE (nomPers,prenomPers,poids,taille,tel,mail,mdp) VALUES (?, ?, ?, ?, ?, ?, ?)");
+    $stmt->execute([$nom, $prenom, $poids, $taille, $tel, $mail, $hash]);
+    //return $next['idPers'];
 }
 
 function insertMoniteur($nom, $prenom, $tel, $mail, $taille, $poids, $nbHeureMax,$mdp){
