@@ -9,11 +9,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../static/styles/home.css">
+    <link rel="stylesheet" href="../static/styles/seance.css">
     <title>Document</title>
 </head>
 <body>
     <aside class="sidebar">
-        <?php //include "./navbar_admin.php" ?>
+        <?php include "./navbar_admin.php" ?>
     </aside>
     <main>
         <div class="content">
